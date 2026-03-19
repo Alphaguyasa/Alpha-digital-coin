@@ -1,0 +1,30 @@
+{
+  "canisters": {
+    "token": {
+      "main": "src/token/main.mo",
+      "type": "motoko"
+    },
+    "token_assets": {
+      "type": "assets",
+      "source": ["out"]
+    },
+    "internet_identity": {
+      "type": "custom",
+      "candid": "https://github.com/dfinity/internet-identity/releases/download/release-2026-03-16/internet_identity.did",
+      "wasm": "https://github.com/dfinity/internet-identity/releases/download/release-2026-03-16/internet_identity_dev.wasm.gz",
+      "remote": {
+        "id": {
+          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai",
+          "playground": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+        }
+      },
+      "init_arg": "(null)"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": ""
+    }
+  },
+  "version": 1
+}
