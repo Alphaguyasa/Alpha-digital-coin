@@ -8,8 +8,12 @@ persistent actor Token {
   transient var totalSupply : Nat = 100000000000000000;
   transient var symbol : Text = "DAlpha";
 
-  private var balanceEntries : [(Principal, Nat)] = [];
-  private transient var balances = HashMap.HashMap<Principal, Nat>(1, Principal.equal, Principal.hash);
+  private stable var balanceEntries : [(Principal, Nat)] = [];
+  private transient var balances : HashMap.HashMap<Principal, Nat> = do {
+    let map = HashMap.HashMap<Principal, Nat>(1, Principal.equal, Principal.hash);
+    map.put(owner, totalSupply);
+    map
+  };
 
   public query func balanceOf(who : Principal) : async Nat {
     let balance = switch (balances.get(who)) {

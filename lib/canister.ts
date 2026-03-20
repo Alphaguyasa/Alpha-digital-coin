@@ -6,12 +6,12 @@ import { IDL } from "@dfinity/candid";
 // ── Config ───────────────────────────────────────────────────────────────────
 // Live IC mainnet canister ID — from: dfx canister --network ic id token
 // Paste your live canister ID below (run: dfx canister --network ic id token)
-export const CANISTER_ID = "uxrrr-q7777-77774-qaaaq-cai";
+export const CANISTER_ID = "u6s2n-gx777-77774-qaaba-cai";
 
 const IS_LOCAL = process.env.NODE_ENV === "development";
 const ICP_HOST = IS_LOCAL ? "http://localhost:4943" : "https://ic0.app";
-const IDENTITY_PROVIDER = IS_LOCAL
-  ? `http://uzt4z-lp777-77774-qaabq-cai.localhost:4943`
+const IDENTITY_PROVIDER = IS_LOCAL 
+  ? "http://uxrrr-q7777-77774-qaaaq-cai.localhost:4943" 
   : "https://identity.ic0.app";
 // ────────────────────────────────────────────────────────────────────────────
 

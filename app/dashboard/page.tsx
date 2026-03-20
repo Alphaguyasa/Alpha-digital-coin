@@ -179,9 +179,14 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center justify-between mb-10"
         >
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: "#FFFFFF" }}>
-            Alpha <span style={{ color: "#FF9900" }}>Coin</span>
-          </h1>
+          <div>
+            <h1 style={{ fontSize: 22, fontWeight: 700, color: "#FFFFFF" }}>
+              Alpha <span style={{ color: "#FF9900" }}>Coin</span>
+            </h1>
+            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 4, fontFamily: "monospace" }}>
+              {principal}
+            </p>
+          </div>
           <button
             onClick={handleLogout}
             style={{ display: "flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", background: "transparent", border: "1px solid rgba(255,255,255,0.1)", padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13 }}
