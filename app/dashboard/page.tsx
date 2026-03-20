@@ -83,6 +83,17 @@ export default function Dashboard() {
     init();
   }, [init]);
 
+  // Auto-refresh balance every 5 seconds when logged in
+  useEffect(() => {
+    if (!principal) return;
+    
+    const interval = setInterval(() => {
+      fetchBalance(principal);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [principal, fetchBalance]);
+
   async function handleLogin() {
     setModalOpen(true);
   }
