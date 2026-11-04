@@ -73,8 +73,16 @@ test("the policies stay in CLAUDE.md", () => {
   }
 });
 
+test("nothing in the canister awaits, so no other message can run during a balance update", () => {
+  for (const path of ["src/token/main.mo", "src/token/Ledger.mo"]) {
+    const code = read(path).replace(/\/\/.*$/gm, "");
+    assert.doesNotMatch(code, /await/, `${path} must not await: see Ledger.mo`);
+  }
+});
+
 test("the canister uses no floating point and offers only the known public functions", () => {
   const source = read("src/token/main.mo");
+  assert.doesNotMatch(read("src/token/Ledger.mo"), /Float/);
   assert.doesNotMatch(source, /\bFloat\b/);
   // A new public function is a new power. A mint or an admin function needs a written
   // justification in NEEDS_APPROVAL.md first, and then a change to this list.
