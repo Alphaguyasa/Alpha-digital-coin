@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Read-only token, no secrets. CI builds and tests; it never deploys. No real keys or
+# wallets are used: the canister job makes throwaway identities on a local replica.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DFX_VERSION: "0.32.0"
+  LINTOKO_VERSION: "0.12.0"
+  DFX_TELEMETRY: "off"
+
+jobs:
+  web:
+    name: web
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit and policy tests
+        run: npm test
+      - name: Known vulnerabilities
+        run: npm audit --audit-level=high
+      - name: Build
+        run: npm run build
+
+  canister:
+    name: canister
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install dfx and lintoko (pinned, checksums verified)
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.local/bin"
+          cd "$RUNNER_TEMP"
+          dfx=dfx-x86_64-unknown-linux-gnu.tar.gz
+          curl -fsSLO "https://github.com/dfinity/sdk/releases/download/${DFX_VERSION}/$dfx"
+          curl -fsSLO "https://github.com/dfinity/sdk/releases/download/${DFX_VERSION}/$dfx.sha256"
+          sha256sum -c "$dfx.sha256"
+          tar -xzf "$dfx" -C "$HOME/.local/bin"
+          lintoko=lintoko-x86_64-unknown-linux-gnu.tar.xz
+          curl -fsSLO "https://github.com/caffeinelabs/lintoko/releases/download/v${LINTOKO_VERSION}/$lintoko"
+          curl -fsSLO "https://github.com/caffeinelabs/lintoko/releases/download/v${LINTOKO_VERSION}/$lintoko.sha256"
+          sha256sum -c "$lintoko.sha256"
+          tar -xJf "$lintoko" -C "$HOME/.local/bin" --strip-components=1
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Show versions
+        run: |
+          dfx --version
+          dfx cache install
+          "$(dfx cache show)/moc" --version
+          lintoko --version
+      - name: Motoko compile check and static analysis
+        run: npm run check:canister
+      - name: Canister tests on a local replica
+        run: npm run test:canister

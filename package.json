@@ -3,13 +3,19 @@
   "version": "0.0.1",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "check:canister": "bash scripts/check-canister.sh",
+    "test:canister": "bash scripts/test-canister.sh"
   },
   "dependencies": {
     "@dfinity/agent": "^3.4.3",

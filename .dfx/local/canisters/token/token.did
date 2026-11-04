@@ -1,6 +1,0 @@
-service : {
-  balanceOf: (who: principal) -> (nat) query;
-  claim: () -> (text);
-  getSymbol: () -> (text) query;
-  transfer: (to: principal, amount: nat) -> (text);
-}

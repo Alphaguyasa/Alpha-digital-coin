@@ -1,6 +1,12 @@
 # Alpha Coin - ICP Token Dashboard
 
-A decentralized token dashboard built on the Internet Computer Protocol (ICP) with Internet Identity authentication.
+> **Experimental software, not financial advice.** This is a learning and development project.
+> The token has no price, promises no returns and is not an investment. It runs on a local
+> development replica. Nothing here is an offer to buy, sell or use anything. Rules on digital
+> currency vary by country, including Ethiopia, and have not been reviewed for this project.
+> It has had no security audit.
+
+A token dashboard built on the Internet Computer Protocol (ICP) with Internet Identity authentication.
 
 ## Features
 
@@ -12,7 +18,7 @@ A decentralized token dashboard built on the Internet Computer Protocol (ICP) wi
 
 ## Tech Stack
 
-- **Frontend**: Next.js 15, React, TypeScript, Tailwind CSS, Framer Motion
+- **Frontend**: Next.js 16, React, TypeScript, Tailwind CSS, Framer Motion
 - **Backend**: Motoko (Internet Computer)
 - **Authentication**: Internet Identity
 - **Blockchain**: Internet Computer Protocol (ICP)
@@ -21,7 +27,7 @@ A decentralized token dashboard built on the Internet Computer Protocol (ICP) wi
 
 ### Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 22.18+ and npm
 - dfx 0.30.1 or later
 
 ### Setup
@@ -60,9 +66,23 @@ A decentralized token dashboard built on the Internet Computer Protocol (ICP) wi
    - Navigate to http://localhost:3000/dashboard
    - Or use the frontend canister URL from dfx deploy output
 
-## Production Deployment
+## Tests
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions on deploying to the Internet Computer mainnet.
+```bash
+npm test                 # policy checks and TypeScript unit tests
+npm run check:canister   # Motoko compile check and static analysis (needs dfx)
+npm run test:canister    # token canister tests on a local replica (needs dfx)
+```
+
+## Deployment
+
+This project is local only. [DEPLOYMENT.md](./DEPLOYMENT.md) describes mainnet steps for reference;
+see the notice at the top of that file before using it.
+
+## Project documents
+
+[ROADMAP.md](./ROADMAP.md), [THREAT_MODEL.md](./THREAT_MODEL.md),
+[NEEDS_APPROVAL.md](./NEEDS_APPROVAL.md), [DAILY_LOG.md](./DAILY_LOG.md) and [CLAUDE.md](./CLAUDE.md).
 
 ## Project Structure
 
