@@ -55,3 +55,15 @@ Anthropic's models page recommends Opus 5.5 for most work and Fable 5.1 for "dem
 2.5 times the API price and slower. Fable reads as a tier above Opus, though the page does not use that
 word. The policy is met by either. The routine uses Opus 5.5, the same as Alpha's other routines.
 **Question:** Do you want Fable 5.1 for this project? It may use your plan's limits faster.
+
+## A10. Your Portfolio routine also has this repo attached
+The routine "Portfolio daily lead developer" (`trig_01CoguLJqDwGNYT5n5SM3wbs`) lists Alpha-digital-coin among
+its 12 repositories. If it ever works on this repo, the two could collide.
+**Question:** Should that routine leave this repo alone?
+**Default:** nothing changed. Only you can change that routine; this project's runs will not touch it.
+
+## A11. Turn on branch protection for main?
+`main` is unprotected, and the repo is public. The merge policy is followed by discipline only, so a mistake
+could push straight to main. Requiring the `web` and `canister` checks would enforce it. It is free.
+**Question:** Do you want this? It changes repository settings, so it waits for you.
+**Default:** unchanged.

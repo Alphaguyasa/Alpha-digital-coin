@@ -23,7 +23,7 @@ failure is silent.
 
 ### R6. [P1 · S] Dead links and controls
 "Terms and Conditions" and "Privacy Policy" link to pages that do not exist (see A8). Landing nav
-items only `console.log`. The "Get ALPHA" and final "Connect Wallet" buttons do nothing.
+items only `console.log`.
 
 ### R7. [P2 · S] Remove dead code and unused dependencies
 `@icp-sdk/auth` and `@icp-sdk/core` appear unused next to `@dfinity/*`. `shadcn` is a CLI in
