@@ -17,6 +17,38 @@ test("the README keeps the experimental, not financial advice disclaimer", () =>
   assert.match(readme, /experimental software, not financial advice/);
 });
 
+test("every page shows the experimental notice", () => {
+  assert.match(read("components/experimental-notice.tsx"), /Experimental software, not financial advice/);
+  const dashboard = read("app/dashboard/page.tsx");
+  assert.equal(dashboard.match(/<ExperimentalNotice \/>/g)?.length, 2, "both dashboard states need it");
+  assert.match(read("app/page.tsx"), /<ExperimentalNotice \/>/);
+});
+
+test("the site makes no price, investment or false claims", () => {
+  const site = trackedFiles.filter((path) => /^(app|components|lib)\/.*\.tsx?$/.test(path));
+  assert.ok(site.length > 0);
+  const banned = [
+    // Price, returns, or a dollar value on a token balance.
+    /\binvest/i, /\bprofit/i, /\bportfolio/i, /\bleverage\b/i, /\byield\b/i, /currentPrice/, /style:\s*"currency"/,
+    // Inviting the public in.
+    /public sale/i, /get alpha/i, /\bbuy\b/i, /alpha economy/i, /future of finance/i, /long-term growth/i,
+    // Features that do not exist.
+    /plug wallet/i, /non-custodial/i, /your keys, your coins/i, /governed by/i, /cold storage/i, /\bvesting\b/i,
+    /sub-second/i, /zero gas/i, /full transaction history/i, /borderless/i,
+  ];
+  for (const path of site) {
+    // Saying that it is not an investment is the one allowed use of the word.
+    const text = read(path).replace(/not an\s+investment/gi, "");
+    for (const pattern of banned) {
+      assert.doesNotMatch(text, pattern, `${path} makes a claim the project rules forbid`);
+    }
+    // ICRC-1 may only be named to say that the token is not it.
+    for (const line of read(path).split("\n").filter((text) => /icrc-1/i.test(text))) {
+      assert.match(line, /\bnot\b/i, `${path} implies ICRC-1 support: ${line.trim()}`);
+    }
+  }
+});
+
 test("no private keys, seed phrases or API tokens are tracked", () => {
   // Built from parts so that this file does not match its own patterns.
   const patterns = [

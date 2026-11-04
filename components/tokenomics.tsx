@@ -12,52 +12,53 @@ interface StatCard extends CardStackItem {
 }
 
 const stats: StatCard[] = [
-  { id: 1, title: "Total Supply", value: "1,000,000,000", suffix: "ALPHA" },
-  { id: 2, title: "Circulating Supply", value: "400,000,000", suffix: "ALPHA" },
-  { id: 3, title: "Token Standard", value: "ICRC-1", suffix: "ICP Native" },
-  { id: 4, title: "Network", value: "ICP", suffix: "Internet Computer" },
+  { id: 1, title: "Supply in the canister", value: "10^17", suffix: "Whole units, under review" },
+  { id: 2, title: "One-time claim", value: "10,000", suffix: "ALPHA per identity" },
+  { id: 3, title: "Token API", value: "Custom", suffix: "Not ICRC-1" },
+  { id: 4, title: "Network", value: "Local", suffix: "Development replica" },
 ];
 
+// A draft only. Nothing in the canister implements this split: see A3 in NEEDS_APPROVAL.md.
 const distribution = [
   {
-    label: "Community & Public",
+    label: "Community",
     percent: 40,
     color: "#FF9900",
     icon: <Users size={14} />,
-    status: "Largest",
-    description: <>400M ALPHA allocated to <span style={{ fontWeight: 600, color: "#FF9900" }}>community</span> holders & public sale</>,
+    status: "Draft",
+    description: <>Proposed share for <span style={{ fontWeight: 600, color: "#FF9900" }}>community</span> use</>,
   },
   {
-    label: "Development Fund",
+    label: "Development",
     percent: 25,
     color: "#FFB84D",
     icon: <Code size={14} />,
-    status: "Active",
-    description: <>250M ALPHA reserved for <span style={{ fontWeight: 600, color: "#FFB84D" }}>protocol</span> development & upgrades</>,
+    status: "Draft",
+    description: <>Proposed share for <span style={{ fontWeight: 600, color: "#FFB84D" }}>development</span></>,
   },
   {
-    label: "Team & Founders",
+    label: "Team",
     percent: 20,
     color: "#CC7A00",
     icon: <Briefcase size={14} />,
-    status: "Vested",
-    description: <>200M ALPHA with <span style={{ fontWeight: 600, color: "#CC7A00" }}>4-year</span> vesting & 1-year cliff</>,
+    status: "Draft",
+    description: <>Proposed share for the <span style={{ fontWeight: 600, color: "#CC7A00" }}>team</span></>,
   },
   {
-    label: "Marketing",
+    label: "Outreach",
     percent: 10,
     color: "#FFD080",
     icon: <Megaphone size={14} />,
-    status: "Growth",
-    description: <>100M ALPHA for <span style={{ fontWeight: 600, color: "#FFD080" }}>campaigns</span>, partnerships & awareness</>,
+    status: "Draft",
+    description: <>Proposed share for <span style={{ fontWeight: 600, color: "#FFD080" }}>outreach</span></>,
   },
   {
     label: "Reserve",
     percent: 5,
     color: "#7A4A00",
     icon: <Shield size={14} />,
-    status: "Locked",
-    description: <>50M ALPHA in <span style={{ fontWeight: 600, color: "#7A4A00" }}>cold storage</span> for emergencies</>,
+    status: "Draft",
+    description: <>Proposed <span style={{ fontWeight: 600, color: "#7A4A00" }}>reserve</span></>,
   },
 ];
 
@@ -104,7 +105,7 @@ export function Tokenomics() {
           </span>
         </h2>
         <p style={{ marginTop: "16px", color: "rgba(255,255,255,0.6)", fontSize: "15px", maxWidth: "480px", margin: "16px auto 0" }}>
-          A transparent and fair distribution designed for long-term growth and community ownership.
+          What the canister does today, and a draft of how tokens could be shared. The split below is not implemented: the whole supply currently sits with one owner.
         </p>
       </motion.div>
 
@@ -177,7 +178,7 @@ export function Tokenomics() {
           transition={{ duration: 0.6 }}
         >
           <h3 style={{ fontSize: "18px", fontWeight: 600, color: "#FFFFFF", marginBottom: "32px", textAlign: "center" }}>
-            Distribution
+            Draft distribution (not implemented)
           </h3>
           <div
             style={{

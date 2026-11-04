@@ -13,7 +13,7 @@ import {
   transfer,
 } from "@/lib/canister";
 import { ConnectWalletModal } from "@/components/ui/connect-wallet-modal";
-import { CryptoCard } from "@/components/ui/asset-card";
+import { ExperimentalNotice } from "@/components/experimental-notice";
 
 const AlphaIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -172,6 +172,10 @@ export default function Dashboard() {
           termsUrl="/terms"
           policyUrl="/privacy"
         />
+
+        <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
+          <ExperimentalNotice />
+        </div>
       </div>
     );
   }
@@ -213,18 +217,17 @@ export default function Dashboard() {
           transition={{ delay: 0.1 }}
           className="flex justify-center mb-6"
         >
-          <CryptoCard
-            icon={<AlphaIcon />}
-            name="Alpha Coin"
-            ticker="ALPHA"
-            percentageChange={0}
-            currentPrice={Number(balance ?? 0)}
-            portfolioValue={Number(balance ?? 0)}
-            portfolioChange={0}
-            leverage={1}
-            gradientFrom="from-orange-500"
+          <div
             className="w-full max-w-md"
-          />
+            style={{ background: "rgba(255,153,0,0.05)", border: "1px solid rgba(255,153,0,0.15)", borderRadius: 16, padding: "24px", textAlign: "center" }}
+          >
+            <div className="flex items-center justify-center gap-2" style={{ color: "rgba(255,255,255,0.6)", fontSize: 13 }}>
+              <AlphaIcon /> Your balance
+            </div>
+            <p style={{ color: "#FFFFFF", fontSize: 32, fontWeight: 700, marginTop: 8, overflowWrap: "anywhere" }}>
+              {balance === null ? "Unavailable" : `${balance.toLocaleString("en-US")} ALPHA`}
+            </p>
+          </div>
         </motion.div>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
@@ -241,7 +244,7 @@ export default function Dashboard() {
               <h2 style={{ fontSize: 16, fontWeight: 600, color: "#FFFFFF" }}>Claim Tokens</h2>
             </div>
             <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 20, lineHeight: 1.6 }}>
-              New to Alpha Coin? Claim your free <span style={{ color: "#FF9900", fontWeight: 600 }}>10,000 ALPHA</span> — one time per wallet.
+              Claim <span style={{ color: "#FF9900", fontWeight: 600 }}>10,000 ALPHA</span> in test tokens, one time per identity. They have no price.
             </p>
             <motion.button
               whileHover={{ scale: 1.03 }}
@@ -304,6 +307,10 @@ export default function Dashboard() {
             {status.msg}
           </motion.div>
         )}
+
+        <div style={{ marginTop: 32 }}>
+          <ExperimentalNotice />
+        </div>
       </div>
     </div>
   );
