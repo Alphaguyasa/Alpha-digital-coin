@@ -25,6 +25,7 @@ Do not change the purpose of the project or invent features it was not meant to 
 
 ```
 src/token/main.mo       The token canister: stable storage, upgrade hooks, public API
+src/token/Ledger.mo     Balance and claim rules, with no await
 app/page.tsx            Landing page (components/web3media-hero, tokenomics, how-it-works, about-us-section)
 app/dashboard/page.tsx  Dashboard: login, balance, claim, transfer
 lib/canister.ts         Candid IDL, Internet Identity login, actor calls
@@ -46,7 +47,7 @@ against that exact string, so changing a result string is a frontend change too.
 | Typecheck | `npm run typecheck` |
 | Node tests | `npm test` (needs Node 22.18 or later: it runs TypeScript directly) |
 | Build | `npm run build` (static export to `out/`) |
-| Motoko check | `npm run check:canister` (needs dfx on PATH; runs lintoko if installed) |
+| Motoko check and unit tests | `npm run check:canister` (needs dfx on PATH; runs lintoko if installed) |
 | Local replica tests | `npm run test:canister` (needs dfx; starts and stops its own replica) |
 
 Toolchain versions are pinned in `.github/workflows/ci.yml` (dfx, Node, lintoko). CI is the

@@ -5,13 +5,6 @@ Effort: S (under an hour), M (a run), L (several runs). Take the top open item.
 
 ## Open
 
-### R1. [P0 · M] Make `transfer` and `claim` safe
-`transfer` awaits self-calls in the middle of updating balances, so another message can run in
-between: two parallel transfers can spend the same balance, and a credit can be lost. The
-anonymous principal can claim and move tokens. Receiving a transfer, even of 0, blocks a later
-claim. Move the rules into a module with no `await`, keep the public API, keep balances across
-upgrades, and test double spend, access control and upgrades.
-
 ### R2. [P0 · M] Remove price and false claims from the site
 The dashboard formats the balance as US dollars with a percentage and a "1X" leverage badge.
 The landing page advertises a "public sale", "Get Alpha Coin", "Buy", ICRC-1, Plug Wallet,
@@ -71,9 +64,19 @@ memory (Sybil). This only matters on a shared network: see A5 before building an
 Standard API, decimals, fee, memo, `created_at_time` deduplication (replay protection) and a
 transaction log.
 
+### R16. [P2 · M] Move from dfx to icp-cli
+dfx now prints "dfx is deprecated, use icp-cli". It still works and is pinned at 0.32.0 in CI. Plan
+the move for the scripts, CI and docs before dfx stops getting fixes.
+
+### R17. [P2 · S] Clear the remaining npm audit findings
+20 remain (18 moderate, 2 low), none high or critical; CI fails only at high. `npm audit fix` cannot
+reach them without major version changes, mostly in the ESLint chain. Review and upgrade them on
+their own branch, and recheck after any `eslint-config-next` release.
+
 ### R15. [P3 · S] Localization
 All strings are English and hard-coded. Move them out and add Amharic when Alpha wants it.
 
 ## Done
 
-- Repo setup: CI, release tags, context files, threat model (see `DAILY_LOG.md`).
+- Repo setup: CI, release tags, context files, threat model ([#1](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/1)).
+- R1. `transfer` and `claim` made safe ([#2](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/2)).

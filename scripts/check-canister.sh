@@ -8,6 +8,8 @@ cache="$(dfx cache show)"
 "$cache/moc" --check --package base "$cache/base" src/token/main.mo
 echo "moc --check: ok"
 
+"$cache/moc" -r --package base "$cache/base" tests/canister/Ledger.test.mo
+
 if command -v lintoko >/dev/null; then
   lintoko -r scripts/lint-rules src/token
   echo "lintoko: ok"

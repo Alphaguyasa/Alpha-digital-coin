@@ -26,16 +26,16 @@ Scope: the token canister (`src/token/`), the dashboard (`app/dashboard/page.tsx
 
 | ID | Threat | Status | Defence or plan |
 |---|---|---|---|
-| T1 | Double spend: parallel `transfer`s read one balance across an `await` | **Open (R1)** | Update balances with no `await` |
-| T2 | Lost credit: parallel transfers to one recipient overwrite each other | **Open (R1)** | Same as T1 |
-| T3 | Debit committed, credit never runs (self-call fails after the first `await`) | **Open (R1)** | Same as T1 |
-| T4 | Anonymous principal claims, or moves the shared anonymous balance | **Open (R1)** | Reject anonymous caller and recipient |
-| T5 | Griefing: a zero transfer to someone blocks their claim forever | **Open (R1)** | Track claims separately, reject zero amounts |
-| T6 | Overflow and underflow | Mitigated | Motoko `Nat` is unbounded and traps on underflow. Tests come with R1 |
+| T1 | Double spend: parallel `transfer`s read one balance across an `await` | Fixed (R1) | No `await` in the canister, enforced by a policy test. Parallel tests in `scripts/test-canister.sh` |
+| T2 | Lost credit: parallel transfers to one recipient overwrite each other | Fixed (R1) | Same as T1 |
+| T3 | Debit committed, credit never runs (self-call fails after the first `await`) | Fixed (R1) | Same as T1 |
+| T4 | Anonymous principal claims, or moves the shared anonymous balance | Fixed (R1) | Anonymous caller and recipient rejected |
+| T5 | Griefing: a zero transfer to someone blocks their claim forever | Fixed (R1) | Claims tracked separately, zero amounts rejected |
+| T6 | Overflow and underflow | Mitigated | Motoko `Nat` is unbounded, and a balance check precedes every subtraction. Tested in `tests/canister/Ledger.test.mo` |
 | T7 | Rounding | Not applicable in the canister (whole units only). **Open in the UI (R3)** | Integer parsing with `bigint` |
 | T8 | Replay of a signed call | Partly mitigated | The IC rejects a duplicate ingress message within its expiry. A client retry after expiry is a new transfer, so there is no application-level dedup. Plan: R14 |
 | T9 | Sybil drain of the claim reserve, memory growth | Open, accepted while local | R13, A5 |
-| T10 | Loss of balances on upgrade | Mitigated | Stable storage. Upgrade tests come with R1 |
+| T10 | Loss of balances on upgrade | Mitigated | Stable storage. Upgrades tested, including from the old canister |
 | T11 | Controller or owner key compromise: all funds | Open, accepted while local | A2 |
 | T12 | Production build reaches mainnet by accident | **Open (R4)** | Explicit, fail-closed configuration |
 | T13 | Sending to a principal nobody controls | Accepted | Same as any ledger. The UI should confirm (R5) |
