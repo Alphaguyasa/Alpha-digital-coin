@@ -88,7 +88,10 @@ the branch and read CI.
 - The routine is named "Alpha Digital Coin daily lead developer"; its ID is recorded in
   `DAILY_LOG.md`. RemoteTrigger is allowed only for `update` on this routine's own model
   (`job_config.ccr.session_context.model`) under the MODEL POLICY, and for nothing else.
-  Never touch another routine.
+  Never touch another routine. Creating a routine attaches every connector on Alpha's account
+  (Stripe, Gmail, Vercel and others) even when `mcp_connections` is empty, and only
+  `clear_mcp_connections: true` removes them. This routine must have none: after any update,
+  check that `mcp_connections` is `[]` in the response.
 
 ---
 
