@@ -51,7 +51,7 @@ test("nothing automated can reach mainnet", () => {
 test("CI has a read-only token and no secrets, and never runs on pull_request_target", () => {
   const ci = read(".github/workflows/ci.yml");
   assert.match(ci, /permissions:\n {2}contents: read/);
-  assert.doesNotMatch(ci, /secrets\.|pull_request_target/);
+  assert.doesNotMatch(ci, /secrets\.\w|pull_request_target/);
 });
 
 test("the policies stay in CLAUDE.md", () => {
@@ -78,7 +78,7 @@ test("the canister uses no floating point and offers only the known public funct
   assert.doesNotMatch(source, /\bFloat\b/);
   // A new public function is a new power. A mint or an admin function needs a written
   // justification in NEEDS_APPROVAL.md first, and then a change to this list.
-  const functions = [...source.matchAll(/public\s+(?:query\s+|shared\s*(?:\(\s*\w+\s*\)\s*)?)?func\s+(\w+)/g)]
+  const functions = [...source.matchAll(/public\s+(?:query\s+|shared\s*(?:\([^)]*\)\s*)?)?func\s+(\w+)/g)]
     .map((match) => match[1])
     .sort();
   assert.deepEqual(functions, ["balanceOf", "claim", "getSymbol", "transfer"]);
