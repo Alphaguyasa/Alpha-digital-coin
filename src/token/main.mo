@@ -8,7 +8,7 @@ persistent actor Token {
   transient var totalSupply : Nat = 100000000000000000;
   transient var symbol : Text = "DAlpha";
 
-  private stable var balanceEntries : [(Principal, Nat)] = [];
+  private var balanceEntries : [(Principal, Nat)] = [];
   private transient var balances : HashMap.HashMap<Principal, Nat> = do {
     let map = HashMap.HashMap<Principal, Nat>(1, Principal.equal, Principal.hash);
     map.put(owner, totalSupply);
@@ -27,10 +27,10 @@ persistent actor Token {
     return symbol;
   };
 
-  public shared (msg) func claim() : async Text {
+  public shared ({ caller }) func claim() : async Text {
     let amount = 10000;
-    Debug.print(debug_show (msg.caller));
-    switch (balances.get(msg.caller)) {
+    Debug.print(debug_show (caller));
+    switch (balances.get(caller)) {
       case null {
         let ownerBalance = switch (balances.get(owner)) {
           case null 0;
@@ -38,11 +38,11 @@ persistent actor Token {
         };
         if (ownerBalance < amount) return "Insufficient amount";
         balances.put(owner, ownerBalance - amount);
-        let callerBalance = switch (balances.get(msg.caller)) {
+        let callerBalance = switch (balances.get(caller)) {
           case null 0;
           case (?b) b;
         };
-        balances.put(msg.caller, callerBalance + amount);
+        balances.put(caller, callerBalance + amount);
         return "success";
       };
       case (?_) {
@@ -51,11 +51,11 @@ persistent actor Token {
     };
   };
 
-  public shared (msg) func transfer(to : Principal, amount : Nat) : async Text {
-    let fromBalance = await balanceOf(msg.caller);
+  public shared ({ caller }) func transfer(to : Principal, amount : Nat) : async Text {
+    let fromBalance = await balanceOf(caller);
     if (fromBalance >= amount) {
       let newFromBalance : Nat = fromBalance - amount;
-      balances.put(msg.caller, newFromBalance);
+      balances.put(caller, newFromBalance);
       let toBalance = await balanceOf(to);
       let newToBalance = toBalance + amount;
       balances.put(to, newToBalance);

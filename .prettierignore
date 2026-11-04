@@ -1,4 +1,6 @@
 dist/
+.dfx/
+out/
 node_modules/
 .next/
 .turbo/

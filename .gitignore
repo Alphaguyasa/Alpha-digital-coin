@@ -29,7 +29,16 @@ yarn-error.log*
 pnpm-debug.log*
 
 # env files
-.env*.local
+.env*
+!.env.example
+
+# dfx build output and local replica state
+.dfx/
+
+# keys and keystores
+*.key
+*.keystore
+identity.json
 
 # typescript
 *.tsbuildinfo

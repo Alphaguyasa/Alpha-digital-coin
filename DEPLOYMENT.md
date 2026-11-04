@@ -1,5 +1,9 @@
 # Production Deployment Guide
 
+> **Not approved.** This project is local only. Do not follow this guide until the questions in
+> [NEEDS_APPROVAL.md](./NEEDS_APPROVAL.md) (A1, A2, A3, A5, A7) are answered. Deploying costs real
+> money and would make a token publicly reachable. Automated runs never deploy to mainnet.
+
 This guide explains how to deploy Alpha Coin to the Internet Computer mainnet.
 
 ## Prerequisites
