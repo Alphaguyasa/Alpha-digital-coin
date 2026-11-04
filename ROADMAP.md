@@ -5,13 +5,6 @@ Effort: S (under an hour), M (a run), L (several runs). Take the top open item.
 
 ## Open
 
-### R2. [P0 · M] Remove price and false claims from the site
-The dashboard formats the balance as US dollars with a percentage and a "1X" leverage badge.
-The landing page advertises a "public sale", "Get Alpha Coin", "Buy", ICRC-1, Plug Wallet,
-on-chain history, holder governance, vesting and cold storage: none of it exists, and it invites
-the public in. Show the balance as a plain token count, make the copy match the code, add a
-visible "experimental, not financial advice" notice, and add a test that keeps it that way.
-
 ### R3. [P1 · S] Integer amounts in the frontend
 `lib/canister.ts` takes `amount: number`, and the dashboard uses `Number(amount)` and
 `Number(balance)`. Amounts above 2^53 lose precision, and `1.5` throws an unhandled error. Parse
@@ -80,3 +73,4 @@ All strings are English and hard-coded. Move them out and add Amharic when Alpha
 
 - Repo setup: CI, release tags, context files, threat model ([#1](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/1)).
 - R1. `transfer` and `claim` made safe ([#2](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/2)).
+- R2. Price display and false claims removed from the site, notice added ([#3](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/3)). `components/ui/asset-card.tsx` is deleted: it showed a balance as US dollars with a percentage and a leverage badge.

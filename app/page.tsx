@@ -5,6 +5,7 @@ import { Web3MediaHero } from "@/components/web3media-hero";
 import { Tokenomics } from "@/components/tokenomics";
 import { HowItWorks } from "@/components/how-it-works";
 import AboutUsSection from "@/components/about-us-section";
+import { ExperimentalNotice } from "@/components/experimental-notice";
 
 export default function Page() {
   const router = useRouter();
@@ -19,16 +20,12 @@ export default function Page() {
         { label: "About", onClick: () => console.log("About") },
       ]}
       contactButton={{
-        label: "Connect Wallet",
+        label: "Open Dashboard",
         onClick: () => router.push("/dashboard"),
       }}
-      title="The Future of Finance,"
-      highlightedText="Powered by Alpha"
-      subtitle="Alpha Coin is a decentralized token built on the Internet Computer Protocol. Fast, borderless, and community-owned — redefining what money can do in the Web3 era."
-      ctaButton={{
-        label: "Get Alpha Coin",
-        onClick: () => console.log("Get Alpha Coin clicked"),
-      }}
+      title="An experimental token"
+      highlightedText="on the Internet Computer"
+      subtitle="Alpha Coin is a development project: a token canister written in Motoko, with a small dashboard. It runs on a local development network, has no price and is not an investment."
       cryptoIcons={[
         {
           icon: (
@@ -65,35 +62,6 @@ export default function Page() {
           label: "ICP",
           position: { x: "15%", y: "60%" },
         },
-        {
-          icon: (
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" fill="#FF9900" />
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z"
-                fill="white"
-              />
-              <circle cx="12" cy="12" r="3" fill="white" />
-            </svg>
-          ),
-          label: "DeFi",
-          position: { x: "80%", y: "25%" },
-        },
-        {
-          icon: (
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-              <rect width="24" height="24" rx="4" fill="#FF9900" />
-              <path
-                d="M6 12H18M6 8H18M6 16H14"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          ),
-          label: "Web3",
-          position: { x: "75%", y: "65%" },
-        },
       ]}
       trustedByText="Built on"
       brands={[
@@ -127,41 +95,12 @@ export default function Page() {
             </svg>
           ),
         },
-        {
-          name: "Web3",
-          logo: (
-            <svg width="60" height="24" viewBox="0 0 60 24" fill="none">
-              <text x="0" y="18" fill="rgba(255,255,255,0.5)" fontSize="16" fontWeight="600">
-                Web3
-              </text>
-            </svg>
-          ),
-        },
-        {
-          name: "DeFi",
-          logo: (
-            <svg width="50" height="24" viewBox="0 0 50 24" fill="none">
-              <text x="0" y="18" fill="rgba(255,255,255,0.5)" fontSize="16" fontWeight="600">
-                DeFi
-              </text>
-            </svg>
-          ),
-        },
-        {
-          name: "Internet Computer",
-          logo: (
-            <svg width="130" height="24" viewBox="0 0 130 24" fill="none">
-              <text x="0" y="18" fill="rgba(255,255,255,0.5)" fontSize="13" fontWeight="600">
-                Internet Computer
-              </text>
-            </svg>
-          ),
-        },
       ]}
     />
     <Tokenomics />
     <HowItWorks />
     <AboutUsSection />
+    <ExperimentalNotice />
     </>
   );
 }

@@ -11,12 +11,11 @@ import {
   Lock,
   BarChart3,
   Award,
-  Users,
-  TrendingUp,
+  Hash,
+  Server,
   CheckCircle,
   Sparkles,
   Star,
-  ArrowRight,
   Wallet,
 } from "lucide-react"
 import { motion, useScroll, useTransform, useInView, useSpring } from "framer-motion"
@@ -62,58 +61,58 @@ export default function AboutUsSection() {
     {
       icon: <Shield className="w-6 h-6" />,
       secondaryIcon: <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-[#FF9900]" />,
-      title: "Secure",
+      title: "Security First",
       description:
-        "Built on the Internet Computer Protocol, Alpha Coin leverages canister smart contracts to ensure every transaction is tamper-proof, transparent, and fully on-chain.",
+        "Each transfer runs as one atomic step and is covered by abuse tests. The project is still in development and has had no security audit.",
       position: "left",
     },
     {
       icon: <Zap className="w-6 h-6" />,
       secondaryIcon: <CheckCircle className="w-4 h-4 absolute -top-1 -right-1 text-[#FF9900]" />,
-      title: "Fast",
+      title: "Local Only",
       description:
-        "Experience sub-second transaction finality with near-zero fees. Alpha Coin runs natively on ICP, eliminating the bottlenecks of traditional blockchain networks.",
+        "The token runs as a Motoko canister on a local development replica. Nothing is deployed to a public network.",
       position: "left",
     },
     {
       icon: <Globe className="w-6 h-6" />,
       secondaryIcon: <Star className="w-4 h-4 absolute -top-1 -right-1 text-[#FF9900]" />,
-      title: "Borderless",
+      title: "Simple Transfers",
       description:
-        "Send ALPHA to anyone, anywhere in the world instantly. No banks, no intermediaries — just peer-to-peer value transfer powered by decentralized infrastructure.",
+        "Send ALPHA to another principal on the same network and see your balance. That is all it does today.",
       position: "left",
     },
     {
       icon: <Coins className="w-6 h-6" />,
       secondaryIcon: <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-[#FF9900]" />,
-      title: "ICRC-1 Standard",
+      title: "Custom API",
       description:
-        "Alpha Coin follows the ICRC-1 token standard on ICP — the equivalent of ERC-20 on Ethereum — ensuring full compatibility with wallets, DEXs, and DeFi protocols.",
+        "The canister has its own small API and is not ICRC-1, so standard wallets and tools will not work with it.",
       position: "right",
     },
     {
       icon: <Lock className="w-6 h-6" />,
       secondaryIcon: <CheckCircle className="w-4 h-4 absolute -top-1 -right-1 text-[#FF9900]" />,
-      title: "Non-Custodial",
+      title: "Internet Identity",
       description:
-        "Your keys, your coins. Alpha Coin integrates with Internet Identity and Plug Wallet so you always remain in full control of your assets — no sign-up required.",
+        "You sign in with Internet Identity, with no email or sign-up. It is the only sign-in method supported.",
       position: "right",
     },
     {
       icon: <BarChart3 className="w-6 h-6" />,
       secondaryIcon: <Star className="w-4 h-4 absolute -top-1 -right-1 text-[#FF9900]" />,
-      title: "Community Owned",
+      title: "Open Code",
       description:
-        "40% of the total supply is allocated to the community. Alpha Coin is governed by its holders, ensuring the protocol evolves in the best interest of its users.",
+        "The code is public. There is no governance: holders have no vote, and one owner currently holds the supply.",
       position: "right",
     },
   ]
 
   const stats = [
-    { icon: <Wallet />, value: 1000000000, label: "Total Supply", suffix: " ALPHA" },
-    { icon: <Users />, value: 400, label: "Community Allocation", suffix: "M" },
-    { icon: <Award />, value: 0, label: "Transaction Fees", suffix: "" },
-    { icon: <TrendingUp />, value: 100, label: "On-Chain", suffix: "%" },
+    { icon: <Wallet />, value: 10000, label: "One-Time Claim", suffix: " ALPHA" },
+    { icon: <Hash />, value: 0, label: "Decimals", suffix: "" },
+    { icon: <Award />, value: 0, label: "Security Audits", suffix: "" },
+    { icon: <Server />, value: 0, label: "Public Deployments", suffix: "" },
   ]
 
   return (
@@ -178,8 +177,8 @@ export default function AboutUsSection() {
         </motion.div>
 
         <motion.p className="text-center max-w-2xl mx-auto mb-16" style={{ color: "rgba(255,255,255,0.6)", fontSize: "15px", lineHeight: 1.7 }} variants={itemVariants}>
-          Alpha Coin is a decentralized token built on the Internet Computer Protocol using Motoko smart contracts.
-          We are building a fast, borderless, and community-owned financial system for the next generation of Web3.
+          Alpha Coin is an experimental token built on the Internet Computer Protocol using a Motoko canister.
+          It is a development project: it has no price, is not an investment and is not offered to the public.
         </motion.p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
@@ -216,21 +215,6 @@ export default function AboutUsSection() {
                   alt="Alpha Coin on ICP"
                   className="w-full h-full object-cover"
                 />
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-t from-[#202e44]/50 to-transparent flex items-end justify-center p-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.9 }}
-                >
-                  <motion.button
-                    className="px-4 py-2 rounded-full flex items-center gap-2 text-sm font-medium"
-                    style={{ background: "#FF9900", color: "#0A0500" }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Get ALPHA <ArrowRight className="w-4 h-4" />
-                  </motion.button>
-                </motion.div>
               </motion.div>
               <motion.div
                 className="absolute inset-0 border-4 rounded-md -m-3 z-[-1]"
@@ -324,28 +308,6 @@ export default function AboutUsSection() {
           ))}
         </motion.div>
 
-
-        {/* CTA Section */}
-        <motion.div
-          className="mt-20 p-8 rounded-xl flex flex-col md:flex-row items-center justify-between gap-6"
-          style={{ background: "rgba(255,153,0,0.08)", border: "1px solid rgba(255,153,0,0.25)" }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isStatsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <div className="flex-1">
-            <h3 className="text-2xl font-medium mb-2" style={{ color: "#FFFFFF" }}>Ready to join the Alpha economy?</h3>
-            <p style={{ color: "rgba(255,255,255,0.6)" }}>Connect your wallet and start transacting with ALPHA today.</p>
-          </div>
-          <motion.button
-            className="px-6 py-3 rounded-lg flex items-center gap-2 font-medium"
-            style={{ background: "#FF9900", color: "#0A0500" }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Connect Wallet <ArrowRight className="w-4 h-4" />
-          </motion.button>
-        </motion.div>
       </motion.div>
     </section>
   )

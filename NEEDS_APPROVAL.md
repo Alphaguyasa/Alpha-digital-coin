@@ -19,9 +19,10 @@ canister, or nobody?
 **Default:** unchanged locally. It must be answered before any shared deployment.
 
 ## A3. Which supply is right?
-The canister has 100,000,000,000,000,000. The landing page says 1,000,000,000 total and 400,000,000
-circulating, with a 40/25/20/10/5 split, vesting and "cold storage". None of the split exists in code.
-**Default:** the page will say that the figures are a draft and not implemented (R2). The code stays.
+The canister has 100,000,000,000,000,000. The landing page used to say 1,000,000,000 total and
+400,000,000 circulating, with a 40/25/20/10/5 split, vesting and "cold storage". None of that exists
+in code. Which supply and split, if any, do you want?
+**Default:** the page shows the canister's real figures and labels the split as a draft, not implemented. The code stays.
 
 ## A4. Which symbol is right?
 The canister returns `DAlpha`. The site says `ALPHA`. The repo says "Alpha Digital Coin", the site
@@ -34,9 +35,9 @@ is an airdrop, which the project rules forbid without approval.
 **Default:** local only.
 
 ## A6. Should the token become ICRC-1?
-The site claims it is. It is not: the API is custom, so wallets and tools will not work with it.
+The site used to claim it was. It is not: the API is custom, so wallets and tools will not work with it.
 Doing it means new endpoints, decimals and a fee decision (R14).
-**Default:** the site stops making the claim (R2). No ledger rewrite until Alpha decides.
+**Default:** the site no longer makes the claim. No ledger rewrite until Alpha decides.
 
 ## A7. Mainnet deployment
 Needs cycles, which cost real money (`DEPLOYMENT.md` estimates about $0.65 to deploy and $0.13 a month;

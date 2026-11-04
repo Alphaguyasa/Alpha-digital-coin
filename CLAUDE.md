@@ -15,8 +15,7 @@ Tailwind 4, Framer Motion. `@dfinity/agent` and `@dfinity/auth-client` in the br
 local-range ID and there is no mainnet `canister_ids.json`. The token has no decimals, no
 total-supply query and no history. It is **not** ICRC-1.
 
-**What is missing.** Everything in `ROADMAP.md`. In short: honest landing copy, integer
-amounts in the UI, explicit network configuration, and the owner's decisions in
+**What is missing.** Everything in `ROADMAP.md`. In short: integer amounts in the UI, explicit network configuration, and the owner's decisions in
 `NEEDS_APPROVAL.md` (supply, symbol, legal review, ICRC-1).
 
 Do not change the purpose of the project or invent features it was not meant to have.

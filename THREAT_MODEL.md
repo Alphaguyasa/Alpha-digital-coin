@@ -39,7 +39,7 @@ Scope: the token canister (`src/token/`), the dashboard (`app/dashboard/page.tsx
 | T11 | Controller or owner key compromise: all funds | Open, accepted while local | A2 |
 | T12 | Production build reaches mainnet by accident | **Open (R4)** | Explicit, fail-closed configuration |
 | T13 | Sending to a principal nobody controls | Accepted | Same as any ledger. The UI should confirm (R5) |
-| T14 | Misleading site copy | **Open (R2)** | Copy fixed, policy test |
+| T14 | Misleading site copy | Fixed (R2) | Copy matches the code, notice on every page, policy test bans the old claims |
 | T15 | XSS stealing the session | Low | React escaping, no `dangerouslySetInnerHTML`. No CSP yet (add with R4) |
 | T16 | Secret committed to the repo | Mitigated | `tests/policy.test.ts`, `.gitignore`. Public repo: treat anything pushed as leaked |
 | T17 | Vulnerable dependency | Mitigated | `npm audit` fails CI at high or above |

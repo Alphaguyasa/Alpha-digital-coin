@@ -64,35 +64,35 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
   const stepsData = [
     {
       icon: <Search className="h-6 w-6" />,
-      title: "Connect Your Wallet",
+      title: "Sign In",
       description:
-        "Link your Internet Identity or ICP wallet in seconds to access the Alpha Coin ecosystem.",
+        "Sign in with Internet Identity on the local development network.",
       benefits: [
-        "Supports Internet Identity & Plug Wallet",
+        "Internet Identity only",
         "No sign-up or email required",
-        "Fully non-custodial and secure",
+        "Your balance belongs to your principal",
       ],
     },
     {
       icon: <Layers className="h-6 w-6" />,
-      title: "Acquire Alpha Coin",
+      title: "Claim Test Tokens",
       description:
-        "Buy, receive, or earn ALPHA tokens directly on the Internet Computer Protocol.",
+        "Claim a one-time amount of test tokens. They have no price and cannot be bought.",
       benefits: [
-        "Instant on-chain transfers",
-        "Zero gas fees on ICP",
-        "ICRC-1 standard token",
+        "10,000 ALPHA, once per identity",
+        "Whole units, no decimals",
+        "A custom API, not ICRC-1",
       ],
     },
     {
       icon: <Zap className="h-6 w-6" />,
-      title: "Send & Manage",
+      title: "Send & Check",
       description:
-        "Send ALPHA to anyone, check your balance, and track your transaction history in real time.",
+        "Send ALPHA to another principal and check your balance on the dashboard.",
       benefits: [
-        "Sub-second transaction finality",
-        "Full transaction history on-chain",
-        "Manage directly from your dashboard",
+        "Each transfer runs as one atomic step",
+        "Your balance refreshes every few seconds",
+        "No transaction history yet",
       ],
     },
   ];
@@ -117,7 +117,7 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
             </span>
           </h2>
           <p className="mt-4 text-lg" style={{ color: "rgba(255,255,255,0.6)" }}>
-            Get started with Alpha Coin in three simple steps — no banks, no middlemen, just Web3.
+            What the dashboard does, in three steps. Everything runs on a local development network.
           </p>
         </div>
 
