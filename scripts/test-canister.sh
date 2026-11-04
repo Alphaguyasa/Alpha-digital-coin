@@ -6,7 +6,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 export DFX_WARNING="-mainnet_plaintext_identity"
-names="alice bob carol dave erin frank grace"
+names="alice bob carol dave erin frank grace heidi ivan judy kim"
 failures=0
 tmp="$(mktemp -d)"
 
@@ -42,7 +42,9 @@ balance() { # name
   call "$(as alice)" balanceOf "(principal \"$(id "$1")\")" | sed -E 's/[^0-9]//g'
 }
 send() { # from-name to-name amount
-  call "$(as "$1")" transfer "(principal \"$(id "$2")\", $3)"
+  # The type is spelled out because a canister installed from a bare wasm has no interface
+  # for dfx to read, and it would then encode the amount as the wrong type.
+  call "$(as "$1")" transfer "(principal \"$(id "$2")\", $3 : nat)"
 }
 
 for name in $names; do
@@ -85,9 +87,9 @@ expect "transfer to yourself keeps the balance" "9800" "$(balance alice)"
 expect "zero amount is refused" '("Invalid amount")' "$(send alice bob 0)"
 expect "anonymous caller cannot claim" '("Anonymous caller not allowed")' "$(call anonymous claim)"
 expect "anonymous caller cannot transfer" '("Anonymous caller not allowed")' \
-  "$(call anonymous transfer "(principal \"$(id alice)\", 1)")"
+  "$(call anonymous transfer "(principal \"$(id alice)\", 1 : nat)")"
 expect "anonymous recipient is refused" '("Invalid recipient")' \
-  "$(call "$(as alice)" transfer '(principal "2vxsx-fae", 1)')"
+  "$(call "$(as alice)" transfer '(principal "2vxsx-fae", 1 : nat)')"
 
 # Receiving tokens must not use up your claim.
 expect "a recipient can still claim" '("success")' "$(call "$(as bob)" claim)"
@@ -102,6 +104,16 @@ wait
 expect "double spend: exactly one parallel transfer succeeds" "1" "$(cat "$tmp"/spend* | grep -c success || true)"
 expect "double spend: the sender ends with nothing" "0" "$(balance carol)"
 expect "double spend: the recipient gets the amount once" "10000" "$(balance dave)"
+
+# Double spend to different recipients: one balance must not pay several people in full.
+expect "inflation test: claim" '("success")' "$(call "$(as judy)" claim)"
+for recipient in heidi ivan kim; do
+  send judy "$recipient" 10000 >/dev/null 2>&1 &
+done
+wait
+paid=$(($(balance heidi) + $(balance ivan) + $(balance kim)))
+expect "double spend: three recipients receive 10,000 in total, not more" "10000" "$paid"
+expect "double spend: that sender ends with nothing" "0" "$(balance judy)"
 
 # Lost credit: parallel transfers from two senders to one recipient. Both must arrive.
 send alice erin 1000 >/dev/null &
