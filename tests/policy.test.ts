@@ -38,7 +38,7 @@ test("the site makes no price, investment or false claims", () => {
   ];
   for (const path of site) {
     // Saying that it is not an investment is the one allowed use of the word.
-    const text = read(path).replace(/not an investment/gi, "");
+    const text = read(path).replace(/not an\s+investment/gi, "");
     for (const pattern of banned) {
       assert.doesNotMatch(text, pattern, `${path} makes a claim the project rules forbid`);
     }
