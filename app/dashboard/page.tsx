@@ -14,6 +14,7 @@ import {
 } from "@/lib/canister";
 import { ConnectWalletModal } from "@/components/ui/connect-wallet-modal";
 import { ExperimentalNotice } from "@/components/experimental-notice";
+import { formatAmount, parseAmount } from "@/lib/amount";
 
 const AlphaIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -116,12 +117,17 @@ export default function Dashboard() {
 
   async function handleTransfer(e: React.FormEvent) {
     e.preventDefault();
-    if (!toAddress || !amount) return;
+    if (!toAddress) return;
+    const parsed = parseAmount(amount);
+    if (!parsed.ok) {
+      setStatus({ msg: parsed.error, ok: false });
+      return;
+    }
     setLoading(true);
     setStatus(null);
-    const result = await transfer(toAddress, Number(amount));
+    const result = await transfer(toAddress, parsed.value);
     const ok = result === "success";
-    setStatus({ msg: ok ? `Sent ${amount} ALPHA successfully!` : result, ok });
+    setStatus({ msg: ok ? `Sent ${formatAmount(parsed.value)} ALPHA successfully!` : result, ok });
     if (ok && principal) await fetchBalance(principal);
     setLoading(false);
     if (ok) { setToAddress(""); setAmount(""); }
@@ -225,7 +231,7 @@ export default function Dashboard() {
               <AlphaIcon /> Your balance
             </div>
             <p style={{ color: "#FFFFFF", fontSize: 32, fontWeight: 700, marginTop: 8, overflowWrap: "anywhere" }}>
-              {balance === null ? "Unavailable" : `${balance.toLocaleString("en-US")} ALPHA`}
+              {balance === null ? "Unavailable" : `${formatAmount(balance)} ALPHA`}
             </p>
           </div>
         </motion.div>
@@ -277,11 +283,12 @@ export default function Dashboard() {
                 style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,153,0,0.2)", borderRadius: 8, padding: "10px 14px", color: "#FFFFFF", fontSize: 13, outline: "none", fontFamily: "monospace" }}
               />
               <input
-                type="number"
-                placeholder="Amount"
+                type="text"
+                inputMode="numeric"
+                autoComplete="off"
+                placeholder="Amount (whole tokens)"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                min={1}
                 style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,153,0,0.2)", borderRadius: 8, padding: "10px 14px", color: "#FFFFFF", fontSize: 13, outline: "none" }}
               />
               <motion.button
