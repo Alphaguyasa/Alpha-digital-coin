@@ -67,3 +67,11 @@ its 12 repositories. If it ever works on this repo, the two could collide.
 could push straight to main. Requiring the `web` and `canister` checks would enforce it. It is free.
 **Question:** Do you want this? It changes repository settings, so it waits for you.
 **Default:** unchanged.
+
+
+## A12. Turn on "Automatically delete head branches"?
+The cloud git proxy refuses branch deletes, so the routine cannot delete branches after merging, as
+the working conventions ask. GitHub's repository setting "Automatically delete head branches" would do
+it on every merge. It is free. The merged branches `claude/integer-amounts` and `claude/network-config`
+can be deleted by hand from the Branches page.
+**Default:** unchanged. Merged branches stay; they are harmless.
