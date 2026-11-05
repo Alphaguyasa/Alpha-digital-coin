@@ -3,16 +3,25 @@ import { Principal } from "@dfinity/principal";
 import { AuthClient } from "@dfinity/auth-client";
 import { IDL } from "@dfinity/candid";
 
-// ── Config ───────────────────────────────────────────────────────────────────
-// Live IC mainnet canister ID — from: dfx canister --network ic id token
-// Paste your live canister ID below (run: dfx canister --network ic id token)
-export const CANISTER_ID = "u6s2n-gx777-77774-qaaba-cai";
+import { resolveNetwork, type NetworkConfig, type NetworkResult } from "./network";
 
-const IS_LOCAL = process.env.NODE_ENV === "development";
-const ICP_HOST = IS_LOCAL ? "http://localhost:4943" : "https://ic0.app";
-const IDENTITY_PROVIDER = IS_LOCAL 
-  ? "http://uxrrr-q7777-77774-qaaaq-cai.localhost:4943" 
-  : "https://identity.ic0.app";
+// ── Config ───────────────────────────────────────────────────────────────────
+// Read at build time. `dfx deploy` writes the canister IDs to .env.local, and
+// next.config.mjs passes them on, so nothing is hand-edited. Local replica only:
+// see lib/network.ts. Each process.env name is written out in full because Next.js
+// only inlines literal references.
+export const network: NetworkResult = resolveNetwork({
+  network: process.env.NEXT_PUBLIC_DFX_NETWORK,
+  host: process.env.NEXT_PUBLIC_IC_HOST,
+  canisterId: process.env.NEXT_PUBLIC_CANISTER_ID,
+  identityCanisterId: process.env.NEXT_PUBLIC_II_CANISTER_ID,
+});
+
+// Throws instead of guessing when the build is not configured.
+function config(): NetworkConfig {
+  if (!network.ok) throw new Error(network.error);
+  return network.config;
+}
 // ────────────────────────────────────────────────────────────────────────────
 
 // Candid IDL matching your main.mo
@@ -36,10 +45,11 @@ export async function getAuthClient(): Promise<AuthClient> {
 }
 
 export async function login(): Promise<Principal | null> {
+  const { identityProvider } = config();
   const client = await getAuthClient();
   return new Promise((resolve) => {
     client.login({
-      identityProvider: IDENTITY_PROVIDER,
+      identityProvider,
       onSuccess: async () => {
         const identity = client.getIdentity();
         resolve(identity.getPrincipal());
@@ -76,10 +86,13 @@ export async function getPrincipal(): Promise<Principal | null> {
 
 // Build actor with the caller's identity
 async function getActor() {
+  const { host, canisterId } = config();
   const identity = await getIdentity();
-  const agent = await HttpAgent.create({ host: ICP_HOST, identity });
-  if (IS_LOCAL) await agent.fetchRootKey(); // required for local replica
-  return Actor.createActor(idlFactory, { agent, canisterId: CANISTER_ID });
+  const agent = await HttpAgent.create({ host, identity });
+  // A local replica has its own root key. Fetching it is only safe because
+  // lib/network.ts accepts nothing but local hosts.
+  await agent.fetchRootKey();
+  return Actor.createActor(idlFactory, { agent, canisterId });
 }
 
 // ── Token calls ──────────────────────────────────────────────────────────────

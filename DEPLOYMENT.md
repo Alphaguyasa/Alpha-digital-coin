@@ -46,12 +46,8 @@ You need cycles to deploy canisters to mainnet. Here are your options:
    dfx canister --network ic id token
    ```
 
-3. **Update the canister ID in your code:**
-   - Open `lib/canister.ts`
-   - Replace the `CANISTER_ID` value with your mainnet token canister ID
-   ```typescript
-   export const CANISTER_ID = "your-mainnet-canister-id-here";
-   ```
+3. **The frontend will refuse it.** `lib/network.ts` accepts only a local replica, so a
+   mainnet canister ID or host shows an error. Changing that needs Alpha's approval (A7).
 
 4. **Build the frontend:**
    ```bash
@@ -74,20 +70,13 @@ Your app is now live on the Internet Computer mainnet!
 
 ## Step 4: Update GitHub
 
-Commit and push your changes:
-```bash
-git add lib/canister.ts
-git commit -m "Update canister ID for mainnet deployment"
-git push origin main
-```
+Nothing to commit: canister IDs live in `.env.local`, which git ignores, not in the code.
 
 ## Environment Configuration
 
 The app automatically detects the environment:
-- **Development** (`NODE_ENV=development`): Uses local replica and local Internet Identity
-- **Production** (built with `npm run build`): Uses mainnet and https://identity.ic0.app
-
-No additional configuration needed!
+Dev and production builds behave the same: both use the local replica and local Internet
+Identity, with canister IDs from `.env.local`. See `lib/network.ts`.
 
 ## Estimated Costs
 
@@ -105,7 +94,7 @@ No additional configuration needed!
 - Verify your canister ID is correct
 
 ### Frontend not loading
-- Check that `CANISTER_ID` in `lib/canister.ts` matches your deployed token canister
+- Check that `.env.local` has the canister IDs from your last `dfx deploy`
 - Ensure you ran `npm run build` before deploying token_assets
 - Clear browser cache and try again
 

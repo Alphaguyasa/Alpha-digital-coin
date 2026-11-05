@@ -40,13 +40,13 @@ token canister created with canister id: u6s2n-gx777-77774-qaaba-cai
 
 Copy the token canister ID.
 
-## Step 3: Update the Canister ID
+## Step 3: Canister IDs (nothing to edit)
 
-Open `lib/canister.ts` and update the `CANISTER_ID` with your token canister ID:
-
-```typescript
-export const CANISTER_ID = "u6s2n-gx777-77774-qaaba-cai"; // Replace with your ID
-```
+`dfx deploy` writes the token and Internet Identity canister IDs to `.env.local`, and the site
+reads them at build time. To use other IDs, set `NEXT_PUBLIC_CANISTER_ID` and
+`NEXT_PUBLIC_II_CANISTER_ID` in `.env.local`. `NEXT_PUBLIC_IC_HOST` changes the replica address
+(default `http://localhost:4943`). Only a local replica is accepted: any other network or host
+shows an error on the dashboard.
 
 ## Step 4: Start the Development Server
 
@@ -106,7 +106,7 @@ dfx start --clean --background
 # Redeploy canisters (this resets owner balance to 100 quadrillion tokens)
 dfx deploy
 
-# Update CANISTER_ID in lib/canister.ts if it changed
+# dfx deploy rewrites .env.local with the new canister IDs
 
 # Restart Next.js dev server
 npm run dev
@@ -136,8 +136,8 @@ The owner has more than enough balance for testing and demos!
 
 ### "Canister not found" error
 
-- Make sure you updated the `CANISTER_ID` in `lib/canister.ts`
-- Restart the dev server after updating
+- Make sure `dfx deploy` finished, so `.env.local` has the current canister IDs
+- Restart the dev server after a redeploy
 
 ### Internet Identity not loading
 

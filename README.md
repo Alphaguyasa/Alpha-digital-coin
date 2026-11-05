@@ -53,9 +53,10 @@ A token dashboard built on the Internet Computer Protocol (ICP) with Internet Id
    dfx deploy
    ```
 
-5. **Update the canister ID:**
-   - After deployment, copy the token canister ID from the output
-   - Update `CANISTER_ID` in `lib/canister.ts` with your token canister ID
+5. **Canister IDs are picked up automatically:**
+   - `dfx deploy` writes the token and Internet Identity canister IDs to `.env.local` (ignored by git)
+   - The site reads them at build time, so restart `npm run dev` after a redeploy
+   - The site talks to a local replica only. With no canister ID it shows an error instead of guessing
 
 6. **Start the development server:**
    ```bash

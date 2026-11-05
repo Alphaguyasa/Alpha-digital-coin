@@ -5,12 +5,6 @@ Effort: S (under an hour), M (a run), L (several runs). Take the top open item.
 
 ## Open
 
-### R4. [P1 · M] Explicit network configuration that fails closed
-A production build talks to mainnet (`ic0.app`, `identity.ic0.app`) using a local canister ID.
-The local Internet Identity ID in `lib/canister.ts` is also out of date, and `CANISTER_ID` has to
-be hand-edited after every deploy. Read both from `NEXT_PUBLIC_*` at build time, default to local,
-and refuse to start with no canister ID.
-
 ### R5. [P1 · S] Dashboard error handling
 `handleClaim` and `handleTransfer` have no `try`: a rejected call or a bad principal leaves
 `loading` stuck and shows nothing. A failed balance fetch looks like a zero balance. Login
@@ -70,3 +64,4 @@ All strings are English and hard-coded. Move them out and add Amharic when Alpha
 - R1. `transfer` and `claim` made safe ([#2](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/2)).
 - R2. Price display and false claims removed from the site, notice added ([#3](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/3)). `components/ui/asset-card.tsx` is deleted: it showed a balance as US dollars with a percentage and a leverage badge.
 - R3. Integer amounts in the frontend: amounts are parsed to `bigint` in `lib/amount.ts` and never pass through a JavaScript number ([#5](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/5)).
+- R4. Network configuration that fails closed: canister IDs come from `dfx deploy` via `.env.local`, only a local replica is accepted, and an unconfigured build shows an error ([#6](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/6)).
