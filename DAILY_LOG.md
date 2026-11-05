@@ -6,6 +6,26 @@ Routine: "Alpha Digital Coin daily lead developer", `trig_01NuBX7q3J2ydbShVUxRVe
 in UTC, which is 09:00 Africa/Nairobi. The cron field is UTC only, and Nairobi has no daylight saving,
 so this is the same as `CRON_TZ=Africa/Nairobi 0 9 * * *`.
 
+## 2026-11-05: Run 2 (scheduled, cloud)
+
+| Field | Content |
+|---|---|
+| Done | R3: token amounts stay exact integers in the frontend ([#5](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/5)). R4: network read from build config, local replica only, fails closed with no canister ID ([#6](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/6)). |
+| Merged | #5 yes, `v2026-11-05-1`. #6 yes, `v2026-11-05-2`. Both green on first CI run (web and canister). |
+| Failed or blocked | Nothing blocked. The cloud git proxy refuses branch deletes, so merged branches `claude/integer-amounts` and `claude/network-config` are still on GitHub (see A12). dfx is not installed in the cloud session, so Motoko checks ran only in CI. |
+| Roadmap | 13 open (R5 to R17). No replan needed. |
+| Model | Opus 5.5 (`claude-opus-5-5`). Anthropic's models page still lists it as the newest Opus; Fable 5.1 is the open A9 question. No switch. |
+| Needs approval | A1 to A12. Nothing blocks daily work. |
+| Next | R5: dashboard error handling. Then R6: dead links and controls. |
+
+**Checks run locally before each push:** `npm test`, `npm run typecheck`, `npm run lint` (exit 0, only old
+warnings), `npm audit --audit-level=high` (exit 0), `npm run build`. For R4 a static build was opened in
+headless Chromium: with no `.env.local` the dashboard shows "This build is not configured" and no Connect
+button; with a dfx-style `.env.local` both canister IDs are inlined into the bundle.
+
+**Note for local use:** after this run, `dfx deploy` writes `.env.local` and the site reads the canister
+IDs from it. Restart `npm run dev` after a redeploy.
+
 ## 2026-11-04: Run 1 (setup, interactive, from Alpha's PC)
 
 | Field | Content |
