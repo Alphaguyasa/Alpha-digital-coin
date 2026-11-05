@@ -11,6 +11,7 @@ import {
   balanceOf,
   claim,
   transfer,
+  network,
 } from "@/lib/canister";
 import { ConnectWalletModal } from "@/components/ui/connect-wallet-modal";
 import { ExperimentalNotice } from "@/components/experimental-notice";
@@ -160,15 +161,24 @@ export default function Dashboard() {
               Connect with Internet Identity to manage your ALPHA tokens
             </p>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleLogin}
-            disabled={loading}
-            style={{ background: "#FF9900", color: "#0A0500", padding: "14px 36px", borderRadius: 8, fontWeight: 600, fontSize: 15, border: "none", cursor: "pointer" }}
-          >
-            {loading ? "Connecting..." : "Connect Wallet"}
-          </motion.button>
+          {network.ok ? (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleLogin}
+              disabled={loading}
+              style={{ background: "#FF9900", color: "#0A0500", padding: "14px 36px", borderRadius: 8, fontWeight: 600, fontSize: 15, border: "none", cursor: "pointer" }}
+            >
+              {loading ? "Connecting..." : "Connect Wallet"}
+            </motion.button>
+          ) : (
+            <div
+              role="alert"
+              style={{ maxWidth: 480, padding: "14px 20px", borderRadius: 10, background: "rgba(255,60,60,0.1)", border: "1px solid rgba(255,60,60,0.3)", color: "#FF8080", fontSize: 14, lineHeight: 1.6 }}
+            >
+              <strong>This build is not configured.</strong> {network.error}
+            </div>
+          )}
         </motion.div>
 
         <ConnectWalletModal

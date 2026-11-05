@@ -37,10 +37,10 @@ Scope: the token canister (`src/token/`), the dashboard (`app/dashboard/page.tsx
 | T9 | Sybil drain of the claim reserve, memory growth | Open, accepted while local | R13, A5 |
 | T10 | Loss of balances on upgrade | Mitigated | Stable storage. Upgrades tested, including from the old canister |
 | T11 | Controller or owner key compromise: all funds | Open, accepted while local | A2 |
-| T12 | Production build reaches mainnet by accident | **Open (R4)** | Explicit, fail-closed configuration |
+| T12 | Production build reaches mainnet by accident | Fixed (R4) | `lib/network.ts` accepts only network `local` and hosts on this machine, refuses a build with no canister IDs, and is the only reason `fetchRootKey` is safe. Tests in `tests/network.test.ts` |
 | T13 | Sending to a principal nobody controls | Accepted | Same as any ledger. The UI should confirm (R5) |
 | T14 | Misleading site copy | Fixed (R2) | Copy matches the code, notice on every page, policy test bans the old claims |
-| T15 | XSS stealing the session | Low | React escaping, no `dangerouslySetInnerHTML`. No CSP yet (add with R4) |
+| T15 | XSS stealing the session | Low | React escaping, no `dangerouslySetInnerHTML`. No CSP yet (still to add) |
 | T16 | Secret committed to the repo | Mitigated | `tests/policy.test.ts`, `.gitignore`. Public repo: treat anything pushed as leaked |
 | T17 | Vulnerable dependency | Mitigated | `npm audit` fails CI at high or above |
 | T18 | Malicious PR changes CI to reach secrets | Mitigated | CI has a read-only token and no secrets. `pull_request` only, not `pull_request_target` |
