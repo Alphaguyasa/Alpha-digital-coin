@@ -99,8 +99,10 @@ export async function claim(): Promise<string> {
   return actor.claim() as Promise<string>;
 }
 
-export async function transfer(to: string, amount: number): Promise<string> {
+// amount is a whole number of tokens as a bigint (see lib/amount.ts), never a number.
+export async function transfer(to: string, amount: bigint): Promise<string> {
+  if (amount <= BigInt(0)) throw new RangeError("amount must be greater than zero");
   const actor = await getActor();
   const toPrincipal = Principal.fromText(to);
-  return actor.transfer(toPrincipal, BigInt(amount)) as Promise<string>;
+  return actor.transfer(toPrincipal, amount) as Promise<string>;
 }

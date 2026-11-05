@@ -32,7 +32,7 @@ Scope: the token canister (`src/token/`), the dashboard (`app/dashboard/page.tsx
 | T4 | Anonymous principal claims, or moves the shared anonymous balance | Fixed (R1) | Anonymous caller and recipient rejected |
 | T5 | Griefing: a zero transfer to someone blocks their claim forever | Fixed (R1) | Claims tracked separately, zero amounts rejected |
 | T6 | Overflow and underflow | Mitigated | Motoko `Nat` is unbounded, and a balance check precedes every subtraction. Tested in `tests/canister/Ledger.test.mo` |
-| T7 | Rounding | Not applicable in the canister (whole units only). **Open in the UI (R3)** | Integer parsing with `bigint` |
+| T7 | Rounding | Not applicable in the canister (whole units only). Fixed in the UI (R3) | `lib/amount.ts` parses input to `bigint`, rejects fractions, signs, exponents, zero and over-long input; tests in `tests/amount.test.ts` |
 | T8 | Replay of a signed call | Partly mitigated | The IC rejects a duplicate ingress message within its expiry. A client retry after expiry is a new transfer, so there is no application-level dedup. Plan: R14 |
 | T9 | Sybil drain of the claim reserve, memory growth | Open, accepted while local | R13, A5 |
 | T10 | Loss of balances on upgrade | Mitigated | Stable storage. Upgrades tested, including from the old canister |

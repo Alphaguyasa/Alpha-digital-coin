@@ -5,11 +5,6 @@ Effort: S (under an hour), M (a run), L (several runs). Take the top open item.
 
 ## Open
 
-### R3. [P1 · S] Integer amounts in the frontend
-`lib/canister.ts` takes `amount: number`, and the dashboard uses `Number(amount)` and
-`Number(balance)`. Amounts above 2^53 lose precision, and `1.5` throws an unhandled error. Parse
-input into `bigint` in a pure, tested function.
-
 ### R4. [P1 · M] Explicit network configuration that fails closed
 A production build talks to mainnet (`ic0.app`, `identity.ic0.app`) using a local canister ID.
 The local Internet Identity ID in `lib/canister.ts` is also out of date, and `CANISTER_ID` has to
@@ -74,3 +69,4 @@ All strings are English and hard-coded. Move them out and add Amharic when Alpha
 - Repo setup: CI, release tags, context files, threat model ([#1](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/1)).
 - R1. `transfer` and `claim` made safe ([#2](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/2)).
 - R2. Price display and false claims removed from the site, notice added ([#3](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/3)). `components/ui/asset-card.tsx` is deleted: it showed a balance as US dollars with a percentage and a leverage badge.
+- R3. Integer amounts in the frontend: amounts are parsed to `bigint` in `lib/amount.ts` and never pass through a JavaScript number ([#5](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/5)).
