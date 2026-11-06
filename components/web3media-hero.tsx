@@ -12,9 +12,10 @@ interface CryptoIcon {
 
 interface Web3MediaHeroProps {
   logo?: string;
+  // Each item links to a section id on the page, so it works without JavaScript.
   navigation?: Array<{
     label: string;
-    onClick?: () => void;
+    href: string;
   }>;
   contactButton?: {
     label: string;
@@ -39,12 +40,7 @@ interface Web3MediaHeroProps {
 
 export function Web3MediaHero({
   logo = "Web3 Media",
-  navigation = [
-    { label: "Home" },
-    { label: "Gallery" },
-    { label: "Cases" },
-    { label: "About us" },
-  ],
+  navigation = [],
   contactButton,
   title,
   highlightedText = "Web3 Visibility",
@@ -65,6 +61,7 @@ export function Web3MediaHero({
       style={{
         background: "linear-gradient(180deg, #0A0500 0%, #1A0F00 50%, #2A1500 100%)",
       }}
+      id="top"
       role="banner"
       aria-label="Hero section"
     >
@@ -111,9 +108,9 @@ export function Web3MediaHero({
         {/* Navigation */}
         <nav className="hidden lg:flex flex-row items-center gap-8" aria-label="Main navigation">
           {navigation.map((item, index) => (
-            <button
+            <a
               key={index}
-              onClick={item.onClick}
+              href={item.href}
               className="hover:opacity-70 transition-opacity"
               style={{
                 fontFamily: "Inter, sans-serif",
@@ -123,7 +120,7 @@ export function Web3MediaHero({
               }}
             >
               {item.label}
-            </button>
+            </a>
           ))}
         </nav>
 
