@@ -16,6 +16,7 @@ import {
 import { ConnectWalletModal } from "@/components/ui/connect-wallet-modal";
 import { ExperimentalNotice } from "@/components/experimental-notice";
 import { formatAmount, parseAmount } from "@/lib/amount";
+import { balanceLabel, canisterMessage, failureMessage, parseRecipient, type Status } from "@/lib/dashboard";
 
 const AlphaIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +36,8 @@ export default function Dashboard() {
   const [principal, setPrincipal] = useState<string | null>(null);
   const [balance, setBalance] = useState<bigint | null>(null);
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState<{ msg: string; ok: boolean } | null>(null);
+  const [balanceFailed, setBalanceFailed] = useState(false);
+  const [status, setStatus] = useState<Status | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   const wallets = [
@@ -46,12 +48,21 @@ export default function Dashboard() {
       onConnect: async () => {
         setModalOpen(false);
         setLoading(true);
-        const p = await login();
-        if (p) {
-          setPrincipal(p.toText());
-          await fetchBalance(p.toText());
+        setStatus(null);
+        try {
+          const p = await login();
+          if (p) {
+            setPrincipal(p.toText());
+            await fetchBalance(p.toText());
+          } else {
+            setStatus({ msg: "Sign-in did not complete. Try again.", ok: false });
+          }
+        } catch (err) {
+          console.error("Sign-in failed:", err);
+          setStatus({ msg: failureMessage("sign in", err), ok: false });
+        } finally {
+          setLoading(false);
         }
-        setLoading(false);
       },
     },
   ];
@@ -60,24 +71,32 @@ export default function Dashboard() {
   const [toAddress, setToAddress] = useState("");
   const [amount, setAmount] = useState("");
 
+  // A failed read keeps the last balance and marks it as stale, so it never looks like zero.
   const fetchBalance = useCallback(async (p: string) => {
     try {
       const { Principal } = await import("@dfinity/principal");
       const bal = await balanceOf(Principal.fromText(p));
       setBalance(bal);
-    } catch {
-      setBalance(null);
+      setBalanceFailed(false);
+    } catch (err) {
+      console.error("Balance read failed:", err);
+      setBalanceFailed(true);
     }
   }, []);
 
   const init = useCallback(async () => {
-    const authed = await isAuthenticated();
-    if (authed) {
-      const p = await getPrincipal();
-      if (p) {
-        setPrincipal(p.toText());
-        await fetchBalance(p.toText());
+    if (!network.ok) return;
+    try {
+      const authed = await isAuthenticated();
+      if (authed) {
+        const p = await getPrincipal();
+        if (p) {
+          setPrincipal(p.toText());
+          await fetchBalance(p.toText());
+        }
       }
+    } catch (err) {
+      console.error("Restoring the session failed:", err);
     }
   }, [fetchBalance]);
 
@@ -101,24 +120,40 @@ export default function Dashboard() {
   }
 
   async function handleLogout() {
-    await logout();
+    try {
+      await logout();
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
     setPrincipal(null);
     setBalance(null);
+    setBalanceFailed(false);
+    setStatus(null);
   }
 
   async function handleClaim() {
     setLoading(true);
     setStatus(null);
-    const result = await claim();
-    const ok = result === "success";
-    setStatus({ msg: ok ? "10,000 ALPHA claimed!" : result, ok });
-    if (ok && principal) await fetchBalance(principal);
-    setLoading(false);
+    try {
+      const result = await claim();
+      const ok = result === "success";
+      setStatus({ msg: ok ? "10,000 ALPHA claimed!" : canisterMessage(result), ok });
+      if (ok && principal) await fetchBalance(principal);
+    } catch (err) {
+      console.error("Claim failed:", err);
+      setStatus({ msg: failureMessage("claim", err), ok: false });
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleTransfer(e: React.FormEvent) {
     e.preventDefault();
-    if (!toAddress) return;
+    const recipient = parseRecipient(toAddress);
+    if (!recipient.ok) {
+      setStatus({ msg: recipient.error, ok: false });
+      return;
+    }
     const parsed = parseAmount(amount);
     if (!parsed.ok) {
       setStatus({ msg: parsed.error, ok: false });
@@ -126,12 +161,19 @@ export default function Dashboard() {
     }
     setLoading(true);
     setStatus(null);
-    const result = await transfer(toAddress, parsed.value);
-    const ok = result === "success";
-    setStatus({ msg: ok ? `Sent ${formatAmount(parsed.value)} ALPHA successfully!` : result, ok });
-    if (ok && principal) await fetchBalance(principal);
-    setLoading(false);
-    if (ok) { setToAddress(""); setAmount(""); }
+    try {
+      const result = await transfer(recipient.value.toText(), parsed.value);
+      const ok = result === "success";
+      setStatus({ msg: ok ? `Sent ${formatAmount(parsed.value)} ALPHA successfully!` : canisterMessage(result), ok });
+      if (ok) { setToAddress(""); setAmount(""); }
+      if (ok && principal) await fetchBalance(principal);
+    } catch (err) {
+      // The call may or may not have reached the canister, so do not claim either way.
+      console.error("Transfer failed:", err);
+      setStatus({ msg: `${failureMessage("send", err)} Check your balance before sending again.`, ok: false });
+    } finally {
+      setLoading(false);
+    }
   }
 
 // ── Not logged in ──────────────────────────────────────────────────────────
@@ -179,6 +221,14 @@ export default function Dashboard() {
               <strong>This build is not configured.</strong> {network.error}
             </div>
           )}
+          {status && !status.ok && (
+            <div
+              role="alert"
+              style={{ maxWidth: 480, padding: "12px 18px", borderRadius: 10, background: "rgba(255,60,60,0.1)", border: "1px solid rgba(255,60,60,0.3)", color: "#FF8080", fontSize: 14, lineHeight: 1.6 }}
+            >
+              {status.msg}
+            </div>
+          )}
         </motion.div>
 
         <ConnectWalletModal
@@ -195,6 +245,7 @@ export default function Dashboard() {
   }
 
   // ── Logged in ──────────────────────────────────────────────────────────────
+  const balanceView = balanceLabel(balance, balanceFailed, formatAmount);
   return (
     <div
       className="min-h-screen"
@@ -239,8 +290,11 @@ export default function Dashboard() {
               <AlphaIcon /> Your balance
             </div>
             <p style={{ color: "#FFFFFF", fontSize: 32, fontWeight: 700, marginTop: 8, overflowWrap: "anywhere" }}>
-              {balance === null ? "Unavailable" : `${formatAmount(balance)} ALPHA`}
+              {balanceView.text}
             </p>
+            {balanceView.note && (
+              <p style={{ color: "#FFB84D", fontSize: 12, marginTop: 6 }}>{balanceView.note}</p>
+            )}
           </div>
         </motion.div>
 
