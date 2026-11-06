@@ -235,8 +235,6 @@ export default function Dashboard() {
           open={modalOpen}
           onOpenChange={setModalOpen}
           wallets={wallets}
-          termsUrl="/terms"
-          policyUrl="/privacy"
         />
 
         <div style={{ position: "absolute", bottom: 0, width: "100%" }}>

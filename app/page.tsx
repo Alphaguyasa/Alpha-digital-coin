@@ -14,10 +14,10 @@ export default function Page() {
     <Web3MediaHero
       logo="Alpha Coin"
       navigation={[
-        { label: "Home", onClick: () => console.log("Home") },
-        { label: "Tokenomics", onClick: () => console.log("Tokenomics") },
-        { label: "How It Works", onClick: () => console.log("How It Works") },
-        { label: "About", onClick: () => console.log("About") },
+        { label: "Home", href: "#top" },
+        { label: "Tokenomics", href: "#tokenomics" },
+        { label: "How It Works", href: "#how-it-works" },
+        { label: "About", href: "#about-section" },
       ]}
       contactButton={{
         label: "Open Dashboard",
