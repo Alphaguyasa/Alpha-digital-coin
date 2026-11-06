@@ -20,8 +20,6 @@ interface Wallet {
 interface ConnectWalletModalProps
   extends React.ComponentProps<typeof Dialog> {
   wallets: Wallet[];
-  termsUrl?: string;
-  policyUrl?: string;
 }
 
 // --- ICONS (Placeholders) ---
@@ -44,8 +42,6 @@ const ArrowRightIcon = (props: { className?: string }) => (
 // --- MAIN COMPONENT ---
 export function ConnectWalletModal({
   wallets,
-  termsUrl = "#",
-  policyUrl = "#",
   ...props
 }: ConnectWalletModalProps) {
   const containerVariants = {
@@ -93,17 +89,11 @@ export function ConnectWalletModal({
           ))}
         </motion.div>
 
+        {/* No Terms or Privacy pages exist yet, and they need legal input (NEEDS_APPROVAL.md A8),
+            so the dialog links to neither. */}
         <div className="bg-muted/50 p-4 text-center rounded-b-xl border-t">
           <p className="text-xs text-muted-foreground">
-            By connecting your wallet, you agree to our{" "}
-            <a href={termsUrl} className="underline hover:text-foreground">
-              Terms and Conditions
-            </a>{" "}
-            and our{" "}
-            <a href={policyUrl} className="underline hover:text-foreground">
-              Privacy Policy
-            </a>
-            .
+            Experimental software on a local test network. Tokens here have no value.
           </p>
         </div>
       </DialogContent>

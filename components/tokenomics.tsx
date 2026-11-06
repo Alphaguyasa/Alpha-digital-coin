@@ -65,6 +65,7 @@ const distribution = [
 export function Tokenomics() {
   return (
     <section
+      id="tokenomics"
       style={{
         background: "linear-gradient(180deg, #2A1500 0%, #1A0F00 50%, #0A0500 100%)",
         padding: "100px 32px",
