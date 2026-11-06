@@ -6,6 +6,27 @@ Routine: "Alpha Digital Coin daily lead developer", `trig_01NuBX7q3J2ydbShVUxRVe
 in UTC, which is 09:00 Africa/Nairobi. The cron field is UTC only, and Nairobi has no daylight saving,
 so this is the same as `CRON_TZ=Africa/Nairobi 0 9 * * *`.
 
+## 2026-11-06: Run 3 (scheduled, cloud)
+
+| Field | Content |
+|---|---|
+| Done | R5: dashboard error handling ([#8](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/8)). R6: dead links and controls ([#9](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/9)). |
+| Merged | #8 yes, `v2026-11-06-1`. #9 yes, `TAG9`. Both green on first CI run (web and canister). |
+| Failed or blocked | Nothing blocked. Merged branches still cannot be deleted from the cloud (A12). dfx is not installed in the cloud session, so Motoko checks ran only in CI. |
+| Roadmap | 11 open (R7 to R17). No replan needed. R8 now also covers the missing phone navigation. |
+| Model | Opus 5.5 (`claude-opus-5-5`). Anthropic's models page still lists it as the newest Opus; Fable 5.1 is the open A9 question. No switch. |
+| Needs approval | A1 to A12. Nothing blocks daily work. A8's default is now in place. |
+| Next | R7: remove dead code and unused dependencies. Then R8: dashboard layout and accessibility. |
+
+**Checks run locally before each push:** `npm test` (37 pass after both changes), `npm run typecheck`,
+`npm run lint` (exit 0, only old warnings), `npm audit --audit-level=high` (exit 0), `npm run build`. The
+static build was opened in headless Chromium: the unconfigured dashboard renders with no page errors,
+and each landing nav item scrolls to its section. #9 had `main` merged in after #8 so its CI tested both.
+
+**Mistake to learn from.** The fresh checkout's `origin/main` ref was stale (it pointed at a commit from
+before run 1), and the first R5 branch was cut from it. Caught before any commit. Run
+`git fetch origin main` before branching.
+
 ## 2026-11-05: Run 2 (scheduled, cloud)
 
 | Field | Content |
