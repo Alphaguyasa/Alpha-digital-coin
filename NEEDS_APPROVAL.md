@@ -48,7 +48,7 @@ unverified). It also needs A1, A2, A3 and A5 answered first, and a security revi
 ## A8. Terms and Privacy pages
 The wallet dialog says "you agree to our Terms and Conditions and Privacy Policy", but neither exists.
 They need legal input, so they will not be written without Alpha.
-**Default:** R6 removes the sentence until real pages exist.
+**Default:** R6 ([#9](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/9)) removed the sentence. It comes back only with real pages.
 
 ## A9. Model: stay on Opus 5.5, or use Fable 5.1?
 Anthropic's models page recommends Opus 5.5 for most work and Fable 5.1 for "demanding reasoning", at
@@ -72,6 +72,7 @@ could push straight to main. Requiring the `web` and `canister` checks would enf
 ## A12. Turn on "Automatically delete head branches"?
 The cloud git proxy refuses branch deletes, so the routine cannot delete branches after merging, as
 the working conventions ask. GitHub's repository setting "Automatically delete head branches" would do
-it on every merge. It is free. The merged branches `claude/integer-amounts` and `claude/network-config`
-can be deleted by hand from the Branches page.
+it on every merge. It is free. The merged branches `claude/integer-amounts`, `claude/network-config`,
+`claude/dashboard-errors`, `claude/dead-links` and the `claude/log-*` branches can be deleted by hand
+from the Branches page.
 **Default:** unchanged. Merged branches stay; they are harmless.

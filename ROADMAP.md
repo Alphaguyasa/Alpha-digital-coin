@@ -5,15 +5,6 @@ Effort: S (under an hour), M (a run), L (several runs). Take the top open item.
 
 ## Open
 
-### R5. [P1 · S] Dashboard error handling
-`handleClaim` and `handleTransfer` have no `try`: a rejected call or a bad principal leaves
-`loading` stuck and shows nothing. A failed balance fetch looks like a zero balance. Login
-failure is silent.
-
-### R6. [P1 · S] Dead links and controls
-"Terms and Conditions" and "Privacy Policy" link to pages that do not exist (see A8). Landing nav
-items only `console.log`.
-
 ### R7. [P2 · S] Remove dead code and unused dependencies
 `@icp-sdk/auth` and `@icp-sdk/core` appear unused next to `@dfinity/*`. `shadcn` is a CLI in
 runtime dependencies. There are unused wallet icons in `connect-wallet-modal.tsx`, and the
@@ -21,7 +12,8 @@ runtime dependencies. There are unused wallet icons in `connect-wallet-modal.tsx
 
 ### R8. [P2 · S] Dashboard layout and accessibility
 The two-column grid is fixed and breaks on phones. Inputs have placeholders but no labels. The
-status message is not announced to screen readers. Inline styles ignore the theme.
+status message is not announced to screen readers. Inline styles ignore the theme. The landing
+navigation is hidden below the `lg` breakpoint, so phones have no navigation at all.
 
 ### R9. [P2 · S] Stop polling when the tab is hidden
 The dashboard fetches the balance every 5 seconds, always. Pause when hidden and back off on
@@ -65,3 +57,5 @@ All strings are English and hard-coded. Move them out and add Amharic when Alpha
 - R2. Price display and false claims removed from the site, notice added ([#3](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/3)). `components/ui/asset-card.tsx` is deleted: it showed a balance as US dollars with a percentage and a leverage badge.
 - R3. Integer amounts in the frontend: amounts are parsed to `bigint` in `lib/amount.ts` and never pass through a JavaScript number ([#5](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/5)).
 - R4. Network configuration that fails closed: canister IDs come from `dfx deploy` via `.env.local`, only a local replica is accepted, and an unconfigured build shows an error ([#6](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/6)).
+- R5. Dashboard error handling: every call ends loading and shows a message, the recipient is checked before sending, canister results get plain messages, and a failed balance read keeps the last balance marked stale ([#8](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/8)).
+- R6. Dead links and controls: landing navigation links to its sections, and the wallet dialog no longer refers to Terms and Privacy pages that do not exist (A8) ([#9](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/9)).
