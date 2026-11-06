@@ -11,7 +11,7 @@ so this is the same as `CRON_TZ=Africa/Nairobi 0 9 * * *`.
 | Field | Content |
 |---|---|
 | Done | R5: dashboard error handling ([#8](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/8)). R6: dead links and controls ([#9](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/9)). |
-| Merged | #8 yes, `v2026-11-06-1`. #9 yes, `TAG9`. Both green on first CI run (web and canister). |
+| Merged | #8 yes, `v2026-11-06-1`. #9 yes, `v2026-11-06-2`. Both green on first CI run (web and canister). |
 | Failed or blocked | Nothing blocked. Merged branches still cannot be deleted from the cloud (A12). dfx is not installed in the cloud session, so Motoko checks ran only in CI. |
 | Roadmap | 11 open (R7 to R17). No replan needed. R8 now also covers the missing phone navigation. |
 | Model | Opus 5.5 (`claude-opus-5-5`). Anthropic's models page still lists it as the newest Opus; Fable 5.1 is the open A9 question. No switch. |
