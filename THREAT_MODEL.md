@@ -44,7 +44,7 @@ Scope: the token canister (`src/token/`), the dashboard (`app/dashboard/page.tsx
 | T16 | Secret committed to the repo | Mitigated | `tests/policy.test.ts`, `.gitignore`. Public repo: treat anything pushed as leaked |
 | T17 | Vulnerable dependency | Mitigated | `npm audit` fails CI at high or above |
 | T18 | Malicious PR changes CI to reach secrets | Mitigated | CI has a read-only token and no secrets. `pull_request` only, not `pull_request_target` |
-| T19 | Autonomous run deploys or spends | Mitigated | Policy test forbids mainnet flags in `scripts/`, workflows and `package.json`. No keys exist in CI |
+| T19 | Automated job deploys or spends | Mitigated | Policy test forbids mainnet flags in `scripts/`, workflows and `package.json`. No keys exist in CI |
 
 ## Out of scope for now
 

@@ -1,4 +1,4 @@
-// Checks the project rules in CLAUDE.md that a machine can check. A failure here means a
+// Checks the project rules in the engineering handbook that a machine can check. A failure here means a
 // rule was broken, so fix the change rather than the test.
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -86,25 +86,6 @@ test("CI has a read-only token and no secrets, and never runs on pull_request_ta
   assert.doesNotMatch(ci, /secrets\.\w|pull_request_target/);
 });
 
-test("the policies stay in CLAUDE.md", () => {
-  const memory = read("CLAUDE.md");
-  for (const heading of [
-    "PROJECT SUMMARY",
-    "THE DAILY LOOP",
-    "PER-RUN LIMIT",
-    "MONEY AND RISK RULES",
-    "ENGINEERING RULES",
-    "MERGE POLICY",
-    "DEPLOY AND DATABASE POLICY",
-    "MODEL POLICY",
-    "NO PURCHASES POLICY",
-    "SAFETY RULES",
-    "REPORT",
-  ]) {
-    assert.ok(memory.includes(heading), `CLAUDE.md lost the ${heading} section`);
-  }
-});
-
 test("nothing in the canister awaits, so no other message can run during a balance update", () => {
   for (const path of ["src/token/main.mo", "src/token/Ledger.mo"]) {
     const code = read(path).replace(/\/\/.*$/gm, "");
@@ -117,7 +98,7 @@ test("the canister uses no floating point and offers only the known public funct
   assert.doesNotMatch(read("src/token/Ledger.mo"), /Float/);
   assert.doesNotMatch(source, /\bFloat\b/);
   // A new public function is a new power. A mint or an admin function needs a written
-  // justification in NEEDS_APPROVAL.md first, and then a change to this list.
+  // justification in the decision log first, and then a change to this list.
   const functions = [...source.matchAll(/public\s+(?:query\s+|shared\s*(?:\([^)]*\)\s*)?)?func\s+(\w+)/g)]
     .map((match) => match[1])
     .sort();

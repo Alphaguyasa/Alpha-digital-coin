@@ -1,6 +1,6 @@
 // Which network the dashboard talks to, read at build time and checked before use.
 //
-// This project runs on a local replica only (see A7 in NEEDS_APPROVAL.md). So the only
+// This project runs on a local replica only (see A7 in the decision log). So the only
 // accepted network is "local", the only accepted hosts are on this machine, and a build
 // with no token canister ID refuses to make calls instead of guessing one. Pointing the
 // site at a public network needs Alpha's approval and a change to this file.

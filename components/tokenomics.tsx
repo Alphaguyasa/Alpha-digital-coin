@@ -18,7 +18,7 @@ const stats: StatCard[] = [
   { id: 4, title: "Network", value: "Local", suffix: "Development replica" },
 ];
 
-// A draft only. Nothing in the canister implements this split: see A3 in NEEDS_APPROVAL.md.
+// A draft only. Nothing in the canister implements this split: see A3 in the decision log.
 const distribution = [
   {
     label: "Community",

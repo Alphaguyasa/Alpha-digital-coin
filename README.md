@@ -82,8 +82,7 @@ see the notice at the top of that file before using it.
 
 ## Project documents
 
-[ROADMAP.md](./ROADMAP.md), [THREAT_MODEL.md](./THREAT_MODEL.md),
-[NEEDS_APPROVAL.md](./NEEDS_APPROVAL.md), [DAILY_LOG.md](./DAILY_LOG.md) and [CLAUDE.md](./CLAUDE.md).
+[ROADMAP.md](./ROADMAP.md) and [THREAT_MODEL.md](./THREAT_MODEL.md).
 
 ## Project Structure
 

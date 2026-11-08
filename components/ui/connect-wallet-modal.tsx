@@ -89,7 +89,7 @@ export function ConnectWalletModal({
           ))}
         </motion.div>
 
-        {/* No Terms or Privacy pages exist yet, and they need legal input (NEEDS_APPROVAL.md A8),
+        {/* No Terms or Privacy pages exist yet, and they need legal input (the decision log A8),
             so the dialog links to neither. */}
         <div className="bg-muted/50 p-4 text-center rounded-b-xl border-t">
           <p className="text-xs text-muted-foreground">
