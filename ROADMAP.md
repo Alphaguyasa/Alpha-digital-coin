@@ -20,11 +20,6 @@ transaction log.
 dfx now prints "dfx is deprecated, use icp-cli". It still works and is pinned at 0.32.0 in CI. Plan
 the move for the scripts, CI and docs before dfx stops getting fixes.
 
-### R17. [P2 · S] Clear the remaining npm audit findings
-20 remain (18 moderate, 2 low), none high or critical; CI fails only at high. `npm audit fix` cannot
-reach them without major version changes, mostly in the ESLint chain. Review and upgrade them on
-their own branch, and recheck after any `eslint-config-next` release.
-
 ### R15. [P3 · S] Localization
 All strings are English and hard-coded. Move them out and add Amharic when Alpha wants it.
 
@@ -42,3 +37,4 @@ All strings are English and hard-coded. Move them out and add Amharic when Alpha
 - R9. Balance polling stops while the tab is hidden, refreshes on return, and backs off from 5 seconds to a minute on repeated failures.
 - R10. The about-section image is now a local SVG, so the page makes no request to a third-party image host. A test keeps it that way.
 - R11. Dashboard component tests: the real page is rendered in jsdom with the canister replaced, covering signed out, unconfigured, signed in, loading, each failure, exact amounts and hidden-tab polling. New dev dependencies (esbuild, jsdom, Testing Library) are MIT licensed with no high audit findings.
+- R17. `npm audit` is at zero findings: `eslint-config-next` upgraded (with its stricter rules fixed in the dashboard and card stack), `shadcn` dropped from dependencies with its Tailwind preset vendored in `app/shadcn-preset.css`, and `minimatch` pinned past its advisory for the lint tooling.

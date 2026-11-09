@@ -120,15 +120,13 @@ export function CardStack<T extends CardStackItem>({
   const reduceMotion = useReducedMotion();
   const len = items.length;
 
-  const [active, setActive] = React.useState(() =>
+  const [activeIndex, setActive] = React.useState(() =>
     wrapIndex(initialIndex, len),
   );
   const [hovering, setHovering] = React.useState(false);
 
-  // keep active in bounds if items change
-  React.useEffect(() => {
-    setActive((a) => wrapIndex(a, len));
-  }, [len]);
+  // Derived rather than synced in an effect, so it is always in bounds if the items change.
+  const active = wrapIndex(activeIndex, len);
 
   React.useEffect(() => {
     if (!len) return;

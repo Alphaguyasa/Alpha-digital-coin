@@ -106,25 +106,27 @@ export default function Dashboard() {
     }
   }, []);
 
-  const init = useCallback(async () => {
+  // Restore an existing session once, on load. The first state update happens after an await,
+  // and an unmounted page ignores the answer.
+  useEffect(() => {
     if (!network.ok) return;
-    try {
-      const authed = await isAuthenticated();
-      if (authed) {
+    let cancelled = false;
+    (async () => {
+      try {
+        if (!(await isAuthenticated())) return;
         const p = await getPrincipal();
-        if (p) {
+        if (p && !cancelled) {
           setPrincipal(p.toText());
           await fetchBalance(p.toText());
         }
+      } catch (err) {
+        console.error("Restoring the session failed:", err);
       }
-    } catch (err) {
-      console.error("Restoring the session failed:", err);
-    }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [fetchBalance]);
-
-  useEffect(() => {
-    init();
-  }, [init]);
 
   // Keep the balance fresh while signed in. No reads happen in a hidden tab, a tab coming back
   // refreshes at once, and failures back off (see pollDelay).
