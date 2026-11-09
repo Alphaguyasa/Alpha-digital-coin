@@ -30,3 +30,11 @@ jobs:
               - deps
               - out
       - uses: github/codeql-action/analyze@v3
+        with:
+          output: sarif
+      # Findings also appear on the Security tab; this makes them readable from the run log.
+      - name: List findings
+        if: always()
+        run: |
+          jq -r '.runs[].results[] | "\(.ruleId) \(.level // "note") \(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine) \(.message.text)"' sarif/*.sarif | tee findings.txt
+          echo "Findings: $(wc -l < findings.txt)"
