@@ -35,7 +35,7 @@ A token dashboard built on the Internet Computer Protocol (ICP) with Internet Id
 1. **Clone the repository:**
    ```bash
    git clone <your-repo-url>
-   cd next-app
+   cd Alpha-digital-coin
    ```
 
 2. **Install dependencies:**
