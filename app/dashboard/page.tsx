@@ -16,7 +16,7 @@ import {
 import { ConnectWalletModal } from "@/components/ui/connect-wallet-modal";
 import { ExperimentalNotice } from "@/components/experimental-notice";
 import { formatAmount, parseAmount } from "@/lib/amount";
-import { balanceLabel, canisterMessage, failureMessage, parseRecipient, type Status } from "@/lib/dashboard";
+import { balanceLabel, canisterMessage, failureMessage, parseRecipient, pollDelay, type Status } from "@/lib/dashboard";
 
 const AlphaIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-brand-text" aria-hidden="true">
@@ -92,15 +92,17 @@ export default function Dashboard() {
   const [amount, setAmount] = useState("");
 
   // A failed read keeps the last balance and marks it as stale, so it never looks like zero.
-  const fetchBalance = useCallback(async (p: string) => {
+  const fetchBalance = useCallback(async (p: string): Promise<boolean> => {
     try {
       const { Principal } = await import("@dfinity/principal");
       const bal = await balanceOf(Principal.fromText(p));
       setBalance(bal);
       setBalanceFailed(false);
+      return true;
     } catch (err) {
       console.error("Balance read failed:", err);
       setBalanceFailed(true);
+      return false;
     }
   }, []);
 
@@ -124,15 +126,43 @@ export default function Dashboard() {
     init();
   }, [init]);
 
-  // Auto-refresh balance every 5 seconds when logged in
+  // Keep the balance fresh while signed in. No reads happen in a hidden tab, a tab coming back
+  // refreshes at once, and failures back off (see pollDelay).
   useEffect(() => {
     if (!principal) return;
-    
-    const interval = setInterval(() => {
-      fetchBalance(principal);
-    }, 5000);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let stopped = false;
+    let reading = false;
+    let failures = 0;
 
-    return () => clearInterval(interval);
+    const clear = () => {
+      if (timer !== undefined) clearTimeout(timer);
+      timer = undefined;
+    };
+    const schedule = () => {
+      clear();
+      if (!stopped && !document.hidden) timer = setTimeout(read, pollDelay(failures));
+    };
+    const read = async () => {
+      if (reading) return;
+      reading = true;
+      const ok = await fetchBalance(principal);
+      reading = false;
+      failures = ok ? 0 : failures + 1;
+      schedule();
+    };
+    const onVisibilityChange = () => {
+      clear();
+      if (!document.hidden) read();
+    };
+
+    schedule();
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      stopped = true;
+      clear();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
   }, [principal, fetchBalance]);
 
   async function handleLogin() {

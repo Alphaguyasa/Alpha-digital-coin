@@ -68,3 +68,13 @@ export function balanceLabel(balance: bigint | null, failed: boolean, format: (v
     note: failed ? "Could not refresh. This is the last balance read." : null,
   }
 }
+
+export const POLL_INTERVAL_MS = 5_000
+export const POLL_MAX_INTERVAL_MS = 60_000
+
+// How long to wait before the next balance read: every 5 seconds while reads succeed, then
+// doubling after each failure up to a minute, so a stopped replica is not hammered.
+export function pollDelay(consecutiveFailures: number): number {
+  const steps = Math.min(Math.max(0, consecutiveFailures), 10)
+  return Math.min(POLL_INTERVAL_MS * 2 ** steps, POLL_MAX_INTERVAL_MS)
+}

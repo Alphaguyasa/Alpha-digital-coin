@@ -4,7 +4,7 @@ import { test } from "node:test"
 import assert from "node:assert/strict"
 import { readFileSync } from "node:fs"
 import { formatAmount } from "../lib/amount.ts"
-import { balanceLabel, canisterMessage, failureMessage, parseRecipient } from "../lib/dashboard.ts"
+import { balanceLabel, canisterMessage, failureMessage, parseRecipient, pollDelay } from "../lib/dashboard.ts"
 
 // A throwaway local canister ID, used here only as a well-formed principal.
 const VALID = "uxrrr-q7777-77774-qaaaq-cai"
@@ -69,4 +69,21 @@ test("the dashboard wraps each canister call so loading always ends", () => {
     assert.match(after, /finally \{\s*setLoading\(false\)/, `${call} has no finally that ends loading`)
   }
   assert.doesNotMatch(page, /setBalance\(null\);\s*\}\s*\}, \[\]\)/, "a failed fetch must not clear the balance")
+})
+
+test("polling backs off on failure and stays bounded", () => {
+  assert.equal(pollDelay(0), 5_000)
+  assert.equal(pollDelay(1), 10_000)
+  assert.equal(pollDelay(2), 20_000)
+  assert.equal(pollDelay(4), 60_000)
+  assert.equal(pollDelay(50), 60_000, "many failures stay at the cap")
+  assert.equal(pollDelay(-3), 5_000)
+})
+
+test("the dashboard stops polling while the tab is hidden", () => {
+  const page = readFileSync(new URL("../app/dashboard/page.tsx", import.meta.url), "utf8")
+  assert.match(page, /addEventListener\("visibilitychange"/)
+  assert.match(page, /removeEventListener\("visibilitychange"/)
+  assert.match(page, /document\.hidden/)
+  assert.doesNotMatch(page, /setInterval/, "a fixed interval keeps running in a hidden tab")
 })
