@@ -55,14 +55,14 @@ jobs:
           mkdir -p "$HOME/.local/bin"
           cd "$RUNNER_TEMP"
           dfx=dfx-x86_64-unknown-linux-gnu.tar.gz
-          curl -fsSLO "https://github.com/dfinity/sdk/releases/download/${DFX_VERSION}/$dfx"
-          curl -fsSLO "https://github.com/dfinity/sdk/releases/download/${DFX_VERSION}/$dfx.sha256"
+          curl -fsSLO --retry 5 --retry-delay 5 --retry-all-errors "https://github.com/dfinity/sdk/releases/download/${DFX_VERSION}/$dfx"
+          curl -fsSLO --retry 5 --retry-delay 5 --retry-all-errors "https://github.com/dfinity/sdk/releases/download/${DFX_VERSION}/$dfx.sha256"
           sha256sum -c "$dfx.sha256"
           mkdir dfx-unpacked && tar -xzf "$dfx" -C dfx-unpacked
           find dfx-unpacked -type f -name dfx -exec install -m 755 {} "$HOME/.local/bin/dfx" \;
           lintoko=lintoko-x86_64-unknown-linux-gnu.tar.xz
-          curl -fsSLO "https://github.com/caffeinelabs/lintoko/releases/download/v${LINTOKO_VERSION}/$lintoko"
-          curl -fsSLO "https://github.com/caffeinelabs/lintoko/releases/download/v${LINTOKO_VERSION}/$lintoko.sha256"
+          curl -fsSLO --retry 5 --retry-delay 5 --retry-all-errors "https://github.com/caffeinelabs/lintoko/releases/download/v${LINTOKO_VERSION}/$lintoko"
+          curl -fsSLO --retry 5 --retry-delay 5 --retry-all-errors "https://github.com/caffeinelabs/lintoko/releases/download/v${LINTOKO_VERSION}/$lintoko.sha256"
           sha256sum -c "$lintoko.sha256"
           mkdir lintoko-unpacked && tar -xJf "$lintoko" -C lintoko-unpacked
           find lintoko-unpacked -type f -name lintoko -exec install -m 755 {} "$HOME/.local/bin/lintoko" \;
