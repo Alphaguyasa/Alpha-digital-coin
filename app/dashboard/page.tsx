@@ -19,9 +19,9 @@ import { formatAmount, parseAmount } from "@/lib/amount";
 import { balanceLabel, canisterMessage, failureMessage, parseRecipient, type Status } from "@/lib/dashboard";
 
 const AlphaIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="12" cy="12" r="10" fill="white" fillOpacity="0.2" stroke="white" strokeWidth="2"/>
-    <text x="12" y="16" fill="white" fontSize="11" fontWeight="bold" textAnchor="middle">α</text>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-brand-text" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="2"/>
+    <text x="12" y="16" fill="currentColor" fontSize="11" fontWeight="bold" textAnchor="middle">α</text>
   </svg>
 );
 
@@ -31,6 +31,26 @@ const IIIcon = (props: { className?: string }) => (
     <text x="12" y="16" fill="white" fontSize="11" fontWeight="bold" textAnchor="middle">II</text>
   </svg>
 );
+
+const focusRing = "outline-none focus-visible:ring-2 focus-visible:ring-brand-text focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+const primaryButton = `${focusRing} rounded-lg bg-brand font-semibold text-brand-foreground disabled:cursor-not-allowed disabled:opacity-70`;
+const card = "rounded-2xl border border-brand/15 bg-brand/5";
+const fieldLabel = "text-xs font-medium text-muted-foreground";
+// 16px on phones: iOS zooms the page when a focused input is smaller.
+const fieldInput = `${focusRing} w-full rounded-lg border border-brand/20 bg-foreground/5 px-3.5 py-2.5 text-base text-foreground sm:text-[13px]`;
+const statusBox = "rounded-[10px] border px-5 py-3.5 text-sm leading-relaxed";
+const statusSuccess = "border-success-text/30 bg-success-text/10 text-success-text";
+const statusError = "border-danger-text/30 bg-danger-text/10 text-danger-text";
+
+// Stays mounted while empty: screen readers only announce changes inside a live region that
+// already exists, so a region added together with its message is often missed.
+function StatusRegion({ status, className = "" }: { status: Status | null; className?: string }) {
+  return (
+    <div role="status" aria-live="polite" aria-atomic="true" className={className}>
+      {status && <div className={`${statusBox} ${status.ok ? statusSuccess : statusError}`}>{status.msg}</div>}
+    </div>
+  );
+}
 
 export default function Dashboard() {
   const [principal, setPrincipal] = useState<string | null>(null);
@@ -179,67 +199,47 @@ export default function Dashboard() {
 // ── Not logged in ──────────────────────────────────────────────────────────
   if (!principal) {
     return (
-      <div
-        className="min-h-screen flex flex-col items-center justify-center"
-        style={{ background: "linear-gradient(180deg, #0A0500 0%, #1A0F00 100%)", fontFamily: "Inter, sans-serif" }}
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col items-center gap-8 text-center px-4"
-        >
-          <div style={{ width: 80, height: 80, borderRadius: "50%", background: "rgba(255,153,0,0.15)", border: "1px solid rgba(255,153,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Wallet size={36} color="#FF9900" />
-          </div>
-          <div>
-            <h1 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 600, color: "#FFFFFF", letterSpacing: "-0.02em" }}>
-              Alpha Coin{" "}
-              <span style={{ background: "linear-gradient(90deg, #FF9900, #FFB84D)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                Dashboard
-              </span>
-            </h1>
-            <p style={{ color: "rgba(255,255,255,0.5)", marginTop: 12, fontSize: 15 }}>
-              Connect with Internet Identity to manage your ALPHA tokens
-            </p>
-          </div>
-          {network.ok ? (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleLogin}
-              disabled={loading}
-              style={{ background: "#FF9900", color: "#0A0500", padding: "14px 36px", borderRadius: 8, fontWeight: 600, fontSize: 15, border: "none", cursor: "pointer" }}
-            >
-              {loading ? "Connecting..." : "Connect Wallet"}
-            </motion.button>
-          ) : (
-            <div
-              role="alert"
-              style={{ maxWidth: 480, padding: "14px 20px", borderRadius: 10, background: "rgba(255,60,60,0.1)", border: "1px solid rgba(255,60,60,0.3)", color: "#FF8080", fontSize: 14, lineHeight: 1.6 }}
-            >
-              <strong>This build is not configured.</strong> {network.error}
+      <div className="flex min-h-screen flex-col bg-background text-foreground">
+        <main className="flex flex-1 items-center justify-center px-4 py-12">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center gap-8 text-center"
+          >
+            <div className="flex h-20 w-20 items-center justify-center rounded-full border border-brand/40 bg-brand/15 text-brand-text">
+              <Wallet size={36} aria-hidden="true" />
             </div>
-          )}
-          {status && !status.ok && (
-            <div
-              role="alert"
-              style={{ maxWidth: 480, padding: "12px 18px", borderRadius: 10, background: "rgba(255,60,60,0.1)", border: "1px solid rgba(255,60,60,0.3)", color: "#FF8080", fontSize: 14, lineHeight: 1.6 }}
-            >
-              {status.msg}
+            <div>
+              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+                Alpha Coin <span className="text-brand-text">Dashboard</span>
+              </h1>
+              <p className="mt-3 text-[15px] text-muted-foreground">
+                Connect with Internet Identity to manage your ALPHA tokens
+              </p>
             </div>
-          )}
-        </motion.div>
+            {network.ok ? (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleLogin}
+                disabled={loading}
+                className={`${primaryButton} px-9 py-3.5 text-[15px]`}
+              >
+                {loading ? "Connecting..." : "Connect Wallet"}
+              </motion.button>
+            ) : (
+              <div role="alert" className={`${statusBox} ${statusError} max-w-[480px]`}>
+                <strong>This build is not configured.</strong> {network.error}
+              </div>
+            )}
+            <StatusRegion status={status && !status.ok ? status : null} className="max-w-[480px]" />
+          </motion.div>
 
-        <ConnectWalletModal
-          open={modalOpen}
-          onOpenChange={setModalOpen}
-          wallets={wallets}
-        />
+          <ConnectWalletModal open={modalOpen} onOpenChange={setModalOpen} wallets={wallets} />
+        </main>
 
-        <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
-          <ExperimentalNotice />
-        </div>
+        <ExperimentalNotice />
       </div>
     );
   }
@@ -247,31 +247,25 @@ export default function Dashboard() {
   // ── Logged in ──────────────────────────────────────────────────────────────
   const balanceView = balanceLabel(balance, balanceFailed, formatAmount);
   return (
-    <div
-      className="min-h-screen"
-      style={{ background: "linear-gradient(180deg, #0A0500 0%, #1A0F00 100%)", fontFamily: "Inter, sans-serif", padding: "32px 16px" }}
-    >
-      <div style={{ maxWidth: 900, margin: "0 auto" }}>
-
+    <div className="min-h-screen bg-background px-4 py-8 text-foreground">
+      <main className="mx-auto max-w-[900px]">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between mb-10"
+          className="mb-10 flex flex-wrap items-center justify-between gap-4"
         >
-          <div>
-            <h1 style={{ fontSize: 22, fontWeight: 700, color: "#FFFFFF" }}>
-              Alpha <span style={{ color: "#FF9900" }}>Coin</span>
+          <div className="min-w-0">
+            <h1 className="text-[22px] font-bold">
+              Alpha <span className="text-brand-text">Coin</span>
             </h1>
-            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 4, fontFamily: "monospace" }}>
-              {principal}
-            </p>
+            <p className="mt-1 font-mono text-[11px] break-all text-muted-foreground">{principal}</p>
           </div>
           <button
             onClick={handleLogout}
-            style={{ display: "flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", background: "transparent", border: "1px solid rgba(255,255,255,0.1)", padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13 }}
+            className={`${focusRing} flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-[13px] text-muted-foreground transition-colors hover:text-foreground`}
           >
-            <LogOut size={14} /> Disconnect
+            <LogOut size={14} aria-hidden="true" /> Disconnect
           </button>
         </motion.div>
 
@@ -280,46 +274,39 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="flex justify-center mb-6"
+          className="mb-6 flex justify-center"
         >
-          <div
-            className="w-full max-w-md"
-            style={{ background: "rgba(255,153,0,0.05)", border: "1px solid rgba(255,153,0,0.15)", borderRadius: 16, padding: "24px", textAlign: "center" }}
-          >
-            <div className="flex items-center justify-center gap-2" style={{ color: "rgba(255,255,255,0.6)", fontSize: 13 }}>
+          <div className={`${card} w-full max-w-md p-6 text-center`}>
+            <div className="flex items-center justify-center gap-2 text-[13px] text-muted-foreground">
               <AlphaIcon /> Your balance
             </div>
-            <p style={{ color: "#FFFFFF", fontSize: 32, fontWeight: 700, marginTop: 8, overflowWrap: "anywhere" }}>
-              {balanceView.text}
-            </p>
-            {balanceView.note && (
-              <p style={{ color: "#FFB84D", fontSize: 12, marginTop: 6 }}>{balanceView.note}</p>
-            )}
+            <p className="mt-2 text-[32px] font-bold wrap-anywhere">{balanceView.text}</p>
+            {balanceView.note && <p className="mt-1.5 text-xs text-warning-text">{balanceView.note}</p>}
           </div>
         </motion.div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
-
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {/* Claim Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            style={{ background: "rgba(255,153,0,0.05)", border: "1px solid rgba(255,153,0,0.15)", borderRadius: 16, padding: "28px 24px" }}
+            className={`${card} px-6 py-7`}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-              <Gift size={20} color="#FF9900" />
-              <h2 style={{ fontSize: 16, fontWeight: 600, color: "#FFFFFF" }}>Claim Tokens</h2>
+            <div className="mb-3 flex items-center gap-2.5">
+              <Gift size={20} className="text-brand-text" aria-hidden="true" />
+              <h2 className="text-base font-semibold">Claim Tokens</h2>
             </div>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 20, lineHeight: 1.6 }}>
-              Claim <span style={{ color: "#FF9900", fontWeight: 600 }}>10,000 ALPHA</span> in test tokens, one time per identity. They have no price.
+            <p className="mb-5 text-[13px] leading-relaxed text-muted-foreground">
+              Claim <span className="font-semibold text-brand-text">10,000 ALPHA</span> in test tokens, one time per
+              identity. They have no price.
             </p>
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={handleClaim}
               disabled={loading}
-              style={{ width: "100%", background: "#FF9900", color: "#0A0500", padding: "12px", borderRadius: 8, fontWeight: 600, fontSize: 14, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1 }}
+              className={`${primaryButton} w-full p-3 text-sm`}
             >
               {loading ? "Processing..." : "Claim 10,000 ALPHA"}
             </motion.button>
@@ -330,35 +317,47 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            style={{ background: "rgba(255,153,0,0.05)", border: "1px solid rgba(255,153,0,0.15)", borderRadius: 16, padding: "28px 24px" }}
+            className={`${card} px-6 py-7`}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-              <Send size={20} color="#FF9900" />
-              <h2 style={{ fontSize: 16, fontWeight: 600, color: "#FFFFFF" }}>Send ALPHA</h2>
+            <div className="mb-3 flex items-center gap-2.5">
+              <Send size={20} className="text-brand-text" aria-hidden="true" />
+              <h2 className="text-base font-semibold">Send ALPHA</h2>
             </div>
-            <form onSubmit={handleTransfer} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <input
-                type="text"
-                placeholder="Recipient Principal ID"
-                value={toAddress}
-                onChange={(e) => setToAddress(e.target.value)}
-                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,153,0,0.2)", borderRadius: 8, padding: "10px 14px", color: "#FFFFFF", fontSize: 13, outline: "none", fontFamily: "monospace" }}
-              />
-              <input
-                type="text"
-                inputMode="numeric"
-                autoComplete="off"
-                placeholder="Amount (whole tokens)"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,153,0,0.2)", borderRadius: 8, padding: "10px 14px", color: "#FFFFFF", fontSize: 13, outline: "none" }}
-              />
+            <form onSubmit={handleTransfer} className="flex flex-col gap-3" aria-busy={loading}>
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="recipient" className={fieldLabel}>
+                  Recipient principal ID
+                </label>
+                <input
+                  id="recipient"
+                  type="text"
+                  autoComplete="off"
+                  spellCheck={false}
+                  value={toAddress}
+                  onChange={(e) => setToAddress(e.target.value)}
+                  className={`${fieldInput} font-mono`}
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="amount" className={fieldLabel}>
+                  Amount (whole tokens)
+                </label>
+                <input
+                  id="amount"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className={fieldInput}
+                />
+              </div>
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 type="submit"
                 disabled={loading}
-                style={{ background: "transparent", border: "1px solid rgba(255,153,0,0.4)", color: "#FF9900", padding: "12px", borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1 }}
+                className={`${focusRing} rounded-lg border border-brand/40 p-3 text-sm font-semibold text-brand-text disabled:cursor-not-allowed disabled:opacity-70`}
               >
                 {loading ? "Sending..." : "Send"}
               </motion.button>
@@ -366,21 +365,12 @@ export default function Dashboard() {
           </motion.div>
         </div>
 
-        {/* Status Message */}
-        {status && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{ marginTop: 20, padding: "14px 20px", borderRadius: 10, background: status.ok ? "rgba(0,200,100,0.1)" : "rgba(255,60,60,0.1)", border: `1px solid ${status.ok ? "rgba(0,200,100,0.3)" : "rgba(255,60,60,0.3)"}`, color: status.ok ? "#00C864" : "#FF4444", fontSize: 14, textAlign: "center" }}
-          >
-            {status.msg}
-          </motion.div>
-        )}
+        <StatusRegion status={status} className="mt-5 text-center" />
 
-        <div style={{ marginTop: 32 }}>
+        <div className="mt-8">
           <ExperimentalNotice />
         </div>
-      </div>
+      </main>
     </div>
   );
 }

@@ -66,6 +66,7 @@ export function Tokenomics() {
   return (
     <section
       id="tokenomics"
+      className="overflow-hidden"
       style={{
         background: "linear-gradient(180deg, #2A1500 0%, #1A0F00 50%, #0A0500 100%)",
         padding: "100px 32px",
@@ -181,13 +182,7 @@ export function Tokenomics() {
           <h3 style={{ fontSize: "18px", fontWeight: 600, color: "#FFFFFF", marginBottom: "32px", textAlign: "center" }}>
             Draft distribution (not implemented)
           </h3>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(5, 1fr)",
-              gap: "16px",
-            }}
-          >
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {distribution.map((item, i) => (
               <motion.div
                 key={i}

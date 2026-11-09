@@ -86,7 +86,7 @@ export function Web3MediaHero({
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative z-20 flex flex-row justify-between items-center px-8 lg:px-16"
+        className="relative z-20 flex flex-row flex-wrap justify-between items-center gap-y-3 px-4 sm:px-8 lg:px-16"
         style={{
           paddingTop: "24px",
           paddingBottom: "24px",
@@ -105,13 +105,13 @@ export function Web3MediaHero({
           <span style={{ fontWeight: 700 }}>{logo.split(" ")[1] || ""}</span>
         </div>
 
-        {/* Navigation */}
-        <nav className="hidden lg:flex flex-row items-center gap-8" aria-label="Main navigation">
+        {/* Navigation: its own row on narrow screens, between the logo and the button from lg up */}
+        <nav className="order-last lg:order-none w-full lg:w-auto flex flex-row items-center justify-center gap-4 sm:gap-8 overflow-x-auto" aria-label="Main navigation">
           {navigation.map((item, index) => (
             <a
               key={index}
               href={item.href}
-              className="hover:opacity-70 transition-opacity"
+              className="py-2 whitespace-nowrap hover:opacity-70 transition-opacity"
               style={{
                 fontFamily: "Inter, sans-serif",
                 fontSize: "15px",
@@ -154,7 +154,7 @@ export function Web3MediaHero({
           {cryptoIcons.map((crypto, index) => (
             <motion.div
               key={index}
-              className="absolute flex flex-col items-center gap-2"
+              className="absolute hidden md:flex flex-col items-center gap-2"
               style={{
                 left: crypto.position.x,
                 top: crypto.position.y,

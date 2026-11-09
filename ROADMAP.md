@@ -5,11 +5,6 @@ Effort: S (under an hour), M (a run), L (several runs). Take the top open item.
 
 ## Open
 
-### R8. [P2 · S] Dashboard layout and accessibility
-The two-column grid is fixed and breaks on phones. Inputs have placeholders but no labels. The
-status message is not announced to screen readers. Inline styles ignore the theme. The landing
-navigation is hidden below the `lg` breakpoint, so phones have no navigation at all.
-
 ### R9. [P2 · S] Stop polling when the tab is hidden
 The dashboard fetches the balance every 5 seconds, always. Pause when hidden and back off on
 errors.
@@ -55,3 +50,4 @@ All strings are English and hard-coded. Move them out and add Amharic when Alpha
 - R5. Dashboard error handling: every call ends loading and shows a message, the recipient is checked before sending, canister results get plain messages, and a failed balance read keeps the last balance marked stale ([#8](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/8)).
 - R6. Dead links and controls: landing navigation links to its sections, and the wallet dialog no longer refers to Terms and Privacy pages that do not exist (A8) ([#9](https://github.com/Alphaguyasa/Alpha-digital-coin/pull/9)).
 - R7. Dead code and unused dependencies removed: `@icp-sdk/*`, `radix-ui`, `@radix-ui/react-slot`, `class-variance-authority`, the unused button component and wallet icons. `shadcn` moved to dev dependencies (only its stylesheet is used, at build time). A test now fails if a runtime dependency is not imported.
+- R8. Dashboard layout and accessibility: the grid stacks on phones, inputs have real labels, status messages use a live region that is always mounted, styles follow the light and dark themes with AA contrast, focus rings are visible, reduced-motion is respected, and the landing navigation shows on phones.
