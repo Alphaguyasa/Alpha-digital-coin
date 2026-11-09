@@ -5,9 +5,6 @@ Effort: S (under an hour), M (a run), L (several runs). Take the top open item.
 
 ## Open
 
-### R12. [P2 · S] Add CodeQL for the TypeScript code
-Free on public repos. Fix or document each finding.
-
 ### R13. [P3 · M] Claim abuse limits
 Each new Internet Identity gets free tokens, so one person can drain the reserve and grow canister
 memory (Sybil). This only matters on a shared network: see A5 before building anything.
@@ -38,3 +35,4 @@ All strings are English and hard-coded. Move them out and add Amharic when Alpha
 - R10. The about-section image is now a local SVG, so the page makes no request to a third-party image host. A test keeps it that way.
 - R11. Dashboard component tests: the real page is rendered in jsdom with the canister replaced, covering signed out, unconfigured, signed in, loading, each failure, exact amounts and hidden-tab polling. New dev dependencies (esbuild, jsdom, Testing Library) are MIT licensed with no high audit findings.
 - R17. `npm audit` is at zero findings: `eslint-config-next` upgraded (with its stricter rules fixed in the dashboard and card stack), `shadcn` dropped from dependencies with its Tailwind preset vendored in `app/shadcn-preset.css`, and `minimatch` pinned past its advisory for the lint tooling.
+- R12. CodeQL runs on every push and weekly for the TypeScript code, and lists its findings in the run log. First analysis: zero findings.

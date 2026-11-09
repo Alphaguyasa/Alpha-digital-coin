@@ -28,7 +28,7 @@ A token dashboard built on the Internet Computer Protocol (ICP) with Internet Id
 ### Prerequisites
 
 - Node.js 22.18+ and npm
-- dfx 0.30.1 or later
+- dfx 0.32.0 (the version CI pins)
 
 ### Setup
 

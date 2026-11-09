@@ -8,7 +8,7 @@ This guide explains how to deploy Alpha Coin to the Internet Computer mainnet.
 
 ## Prerequisites
 
-- dfx 0.30.1 or later installed
+- dfx 0.32.0 installed (the version CI pins)
 - ICP tokens or cycles for deployment
 - Your project built and tested locally
 
