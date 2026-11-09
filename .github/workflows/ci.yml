@@ -49,24 +49,34 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
+      # Cached so that a slow or failing release download only matters when a version changes.
+      - uses: actions/cache@v4
+        id: toolchain
+        with:
+          path: |
+            ~/.local/bin/dfx
+            ~/.local/bin/lintoko
+          key: toolchain-dfx-${{ env.DFX_VERSION }}-lintoko-${{ env.LINTOKO_VERSION }}-linux-x64
       - name: Install dfx and lintoko (pinned, checksums verified)
+        if: steps.toolchain.outputs.cache-hit != 'true'
         run: |
           set -euo pipefail
           mkdir -p "$HOME/.local/bin"
           cd "$RUNNER_TEMP"
           dfx=dfx-x86_64-unknown-linux-gnu.tar.gz
-          curl -fsSLO --retry 5 --retry-delay 5 --retry-all-errors "https://github.com/dfinity/sdk/releases/download/${DFX_VERSION}/$dfx"
-          curl -fsSLO --retry 5 --retry-delay 5 --retry-all-errors "https://github.com/dfinity/sdk/releases/download/${DFX_VERSION}/$dfx.sha256"
+          curl -fsSLO --retry 8 --retry-all-errors "https://github.com/dfinity/sdk/releases/download/${DFX_VERSION}/$dfx"
+          curl -fsSLO --retry 8 --retry-all-errors "https://github.com/dfinity/sdk/releases/download/${DFX_VERSION}/$dfx.sha256"
           sha256sum -c "$dfx.sha256"
           mkdir dfx-unpacked && tar -xzf "$dfx" -C dfx-unpacked
           find dfx-unpacked -type f -name dfx -exec install -m 755 {} "$HOME/.local/bin/dfx" \;
           lintoko=lintoko-x86_64-unknown-linux-gnu.tar.xz
-          curl -fsSLO --retry 5 --retry-delay 5 --retry-all-errors "https://github.com/caffeinelabs/lintoko/releases/download/v${LINTOKO_VERSION}/$lintoko"
-          curl -fsSLO --retry 5 --retry-delay 5 --retry-all-errors "https://github.com/caffeinelabs/lintoko/releases/download/v${LINTOKO_VERSION}/$lintoko.sha256"
+          curl -fsSLO --retry 8 --retry-all-errors "https://github.com/caffeinelabs/lintoko/releases/download/v${LINTOKO_VERSION}/$lintoko"
+          curl -fsSLO --retry 8 --retry-all-errors "https://github.com/caffeinelabs/lintoko/releases/download/v${LINTOKO_VERSION}/$lintoko.sha256"
           sha256sum -c "$lintoko.sha256"
           mkdir lintoko-unpacked && tar -xJf "$lintoko" -C lintoko-unpacked
           find lintoko-unpacked -type f -name lintoko -exec install -m 755 {} "$HOME/.local/bin/lintoko" \;
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Add the toolchain to PATH
+        run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Show versions
         run: |
           dfx --version
