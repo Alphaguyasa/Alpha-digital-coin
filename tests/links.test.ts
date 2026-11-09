@@ -44,3 +44,11 @@ test("the site does not refer to Terms or Privacy pages that do not exist (A8)",
     }
   }
 })
+
+test("images are served from this site, so visitors are not exposed to a third party", () => {
+  for (const { path, text } of site) {
+    assert.doesNotMatch(text, /src=["']https?:/, `${path} loads an image from another host`)
+    assert.doesNotMatch(text, /unsplash\.com/, `${path} refers to an external image`)
+  }
+  assert.ok(existsSync(root + "public/about-coin.svg"))
+})

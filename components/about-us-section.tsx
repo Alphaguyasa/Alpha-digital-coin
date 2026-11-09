@@ -211,7 +211,7 @@ export default function AboutUsSection() {
                 whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
               >
                 <img
-                  src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop"
+                  src="/about-coin.svg"
                   alt="Alpha Coin on ICP"
                   className="w-full h-full object-cover"
                 />

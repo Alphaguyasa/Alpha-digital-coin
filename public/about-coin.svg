@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="800" viewBox="0 0 640 800" role="img" aria-label="Alpha Coin">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2A1500"/>
+      <stop offset="1" stop-color="#0A0500"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#FF9900" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#FF9900" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFB84D"/>
+      <stop offset="1" stop-color="#CC7A00"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="800" fill="url(#bg)"/>
+  <circle cx="320" cy="400" r="320" fill="url(#glow)"/>
+  <g fill="none" stroke="#FF9900" stroke-opacity="0.25" stroke-width="2">
+    <circle cx="320" cy="400" r="210"/>
+    <circle cx="320" cy="400" r="270" stroke-dasharray="6 14"/>
+  </g>
+  <circle cx="320" cy="400" r="150" fill="url(#face)"/>
+  <circle cx="320" cy="400" r="128" fill="none" stroke="#0A0500" stroke-opacity="0.35" stroke-width="6"/>
+  <path d="M388 340c-10 34-26 66-50 92-18 20-38 32-58 32-30 0-48-26-48-62 0-44 30-84 70-84 42 0 40 62 62 104 8 16 16 26 28 26" fill="none" stroke="#0A0500" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
