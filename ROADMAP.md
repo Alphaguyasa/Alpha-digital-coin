@@ -5,10 +5,6 @@ Effort: S (under an hour), M (a run), L (several runs). Take the top open item.
 
 ## Open
 
-### R11. [P2 · M] Frontend test coverage
-Add component tests for the dashboard's states: signed out, signed in, loading, each error. This
-needs a test renderer, so check licences and audit first.
-
 ### R12. [P2 · S] Add CodeQL for the TypeScript code
 Free on public repos. Fix or document each finding.
 
@@ -45,3 +41,4 @@ All strings are English and hard-coded. Move them out and add Amharic when Alpha
 - R8. Dashboard layout and accessibility: the grid stacks on phones, inputs have real labels, status messages use a live region that is always mounted, styles follow the light and dark themes with AA contrast, focus rings are visible, reduced-motion is respected, and the landing navigation shows on phones.
 - R9. Balance polling stops while the tab is hidden, refreshes on return, and backs off from 5 seconds to a minute on repeated failures.
 - R10. The about-section image is now a local SVG, so the page makes no request to a third-party image host. A test keeps it that way.
+- R11. Dashboard component tests: the real page is rendered in jsdom with the canister replaced, covering signed out, unconfigured, signed in, loading, each failure, exact amounts and hidden-tab polling. New dev dependencies (esbuild, jsdom, Testing Library) are MIT licensed with no high audit findings.
