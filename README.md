@@ -8,6 +8,30 @@
 
 A token dashboard built on the Internet Computer Protocol (ICP) with Internet Identity authentication.
 
+## Project status: frozen
+
+Development stopped on purpose in November 2026. The project is complete as a learning and
+portfolio piece and is not heading for a public release. Only security maintenance continues:
+CodeQL and dependency updates run weekly.
+
+**Why it stops here.** A real token would need a legal opinion for every country it could reach
+(Ethiopia's rules on digital currency are unsettled), a decision on supply and ownership, an ICRC-1
+ledger with replay protection, limits on the free claim and an independent audit. There is no
+reason to put this token in front of the public, so none of that has been started. The open items
+in [ROADMAP.md](./ROADMAP.md) are written down so the work can resume cleanly.
+
+**What it shows.**
+
+- A double-spend bug in the canister found, proved on a replica (one 10,000 balance paid out
+  30,000) and fixed, with the parallel attacks rerun on every CI build.
+- Token amounts kept as exact integers from the input field to the canister.
+- Every misleading claim removed from the site, including a balance shown as US dollars, and a
+  test that stops them coming back.
+- `npm audit` taken from 43 findings to zero, and CodeQL at zero.
+
+The full story, with before and after code, is in [docs/CASE_STUDY.md](./docs/CASE_STUDY.md).
+To try it locally, see [Quick demo](#quick-demo).
+
 ## Features
 
 - 🔐 Internet Identity wallet authentication
@@ -96,7 +120,7 @@ see the notice at the top of that file before using it.
 
 ## Project documents
 
-[ROADMAP.md](./ROADMAP.md) and [THREAT_MODEL.md](./THREAT_MODEL.md).
+[ROADMAP.md](./ROADMAP.md), [THREAT_MODEL.md](./THREAT_MODEL.md) and [docs/CASE_STUDY.md](./docs/CASE_STUDY.md).
 
 ## Project Structure
 
