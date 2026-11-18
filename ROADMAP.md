@@ -5,6 +5,19 @@ Effort: S (under an hour), M (a run), L (several runs). Take the top open item.
 
 ## Open
 
+### Milestone: freeze as a finished exhibit
+The token stays a local learning project with no price and no public deployment. This milestone
+closes it out so anyone reading the repo can see what was built and why, then puts it in
+maintenance mode.
+
+- [ ] R18. [P2 · S] `docs/CASE_STUDY.md`: the R1 to R17 safety work, with three before and after examples.
+- [ ] R19. [P2 · S] `npm run demo`: start the replica, deploy, seed two identities and start the dashboard, tested in CI.
+- [ ] R20. [P2 · S] README section on the freeze: why it stopped here and what it shows.
+- [ ] R21. [P3 · S] Link the case study from the portfolio site's project page.
+- [ ] R22. [P3 · S] Maintenance mode: only the weekly CodeQL and Dependabot checks keep running.
+
+Everything below waits for a decision to restart the project.
+
 ### R13. [P3 · M] Claim abuse limits
 Each new Internet Identity gets free tokens, so one person can drain the reserve and grow canister
 memory (Sybil). This only matters on a shared network: see A5 before building anything.
