@@ -87,3 +87,5 @@ jobs:
         run: npm run check:canister
       - name: Canister tests on a local replica
         run: npm run test:canister
+      - name: One-command demo sets up and seeds balances
+        run: npm run demo -- --check

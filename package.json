@@ -15,7 +15,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node --test \"tests/**/*.test.ts\"",
     "check:canister": "bash scripts/check-canister.sh",
-    "test:canister": "bash scripts/test-canister.sh"
+    "test:canister": "bash scripts/test-canister.sh",
+    "demo": "bash scripts/demo.sh"
   },
   "dependencies": {
     "@dfinity/agent": "^3.4.3",

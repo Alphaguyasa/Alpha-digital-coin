@@ -11,7 +11,7 @@ closes it out so anyone reading the repo can see what was built and why, then pu
 maintenance mode.
 
 - [x] R18. [P2 · S] `docs/CASE_STUDY.md`: the R1 to R17 safety work, with three before and after examples.
-- [ ] R19. [P2 · S] `npm run demo`: start the replica, deploy, seed two identities and start the dashboard, tested in CI.
+- [x] R19. [P2 · S] `npm run demo`: start the replica, deploy, seed two identities and start the dashboard, tested in CI.
 - [ ] R20. [P2 · S] README section on the freeze: why it stopped here and what it shows.
 - [ ] R21. [P3 · S] Link the case study from the portfolio site's project page.
 - [ ] R22. [P3 · S] Maintenance mode: only the weekly CodeQL and Dependabot checks keep running.

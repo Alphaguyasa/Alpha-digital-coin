@@ -30,6 +30,19 @@ A token dashboard built on the Internet Computer Protocol (ICP) with Internet Id
 - Node.js 22.18+ and npm
 - dfx 0.32.0 (the version CI pins)
 
+### Quick demo
+
+With dfx installed, one command starts a fresh local replica, deploys the canisters, gives two
+throwaway identities real balances and starts the dashboard:
+
+```bash
+npm install
+npm run demo
+```
+
+Then open http://localhost:3000/dashboard. The replica starts with `--clean`, so earlier local
+canister state is wiped. Stop it afterwards with `dfx stop`.
+
 ### Setup
 
 1. **Clone the repository:**
@@ -73,6 +86,7 @@ A token dashboard built on the Internet Computer Protocol (ICP) with Internet Id
 npm test                 # policy checks and TypeScript unit tests
 npm run check:canister   # Motoko compile check and static analysis (needs dfx)
 npm run test:canister    # token canister tests on a local replica (needs dfx)
+npm run demo -- --check  # demo setup and seeded balances, then stop (needs dfx)
 ```
 
 ## Deployment
