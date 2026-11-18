@@ -20,7 +20,7 @@ jobs:
       security-events: write
     steps:
       - uses: actions/checkout@v7
-      - uses: github/codeql-action/init@v3
+      - uses: github/codeql-action/init@v4
         with:
           languages: javascript-typescript
           build-mode: none
@@ -29,7 +29,7 @@ jobs:
             paths-ignore:
               - deps
               - out
-      - uses: github/codeql-action/analyze@v3
+      - uses: github/codeql-action/analyze@v4
         with:
           output: sarif
       # Findings also appear on the Security tab; this makes them readable from the run log.
