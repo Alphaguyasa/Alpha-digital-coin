@@ -14,7 +14,7 @@ maintenance mode.
 - [x] R19. [P2 · S] `npm run demo`: start the replica, deploy, seed two identities and start the dashboard, tested in CI.
 - [x] R20. [P2 · S] README section on the freeze: why it stopped here and what it shows.
 - [ ] R21. [P3 · S] Link the case study from the portfolio site's project page.
-- [ ] R22. [P3 · S] Maintenance mode: only the weekly CodeQL and Dependabot checks keep running.
+- [x] R22. [P3 · S] Maintenance mode: only the weekly CodeQL and Dependabot checks keep running.
 
 Everything below waits for a decision to restart the project.
 
